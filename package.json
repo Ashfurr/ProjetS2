@@ -1,16 +1,17 @@
 {
-	"name": "sidescrolling-platformer-template-phaser3",
+	"name": "projets2",
 	"version": "1.0.0",
-	"description": "A starting template for a sidescrolling platformer game using Matter Physics in Phaser 3.50",
+	"description": "mon platformer",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
 		"build": "parcel build src/index.html --out-dir dist",
-		"build-gh": "parcel build src/index.html --out-dir dist --public-url /sidescrolling-platformer-template-phaser3/",
+		"build-gh": "parcel build src/index.html --out-dir dist --public-url /projets2/",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
 	},
-	
-	"homepage": "https://github.com/ourcade/sidescrolling-platformer-template-phaser3",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/@Ashfurr"
+	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^2.29.0",
 		"@typescript-eslint/parser": "^2.29.0",
