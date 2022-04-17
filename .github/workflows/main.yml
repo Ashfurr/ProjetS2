@@ -1,0 +1,21 @@
+name: "Node.js package"
+
+on:
+    push:
+        branches: 
+        - main
+
+jobs:
+    publish-gpr:
+        name: 🚀 publish
+        runs-on: ubuntu-latest
+        steps:
+             - uses: actions/checkout@v2
+             - uses: actions/setup-node@v1
+               with:
+                  node-version: 12
+                  registry-url: https://npm.pkg.github.com/
+                  scope: '@ashfurr'
+             - run: npm publish --access public
+             - env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
