@@ -27,7 +27,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			debug: true
 		}
 	},
-	scene: [Start,Game,UI,GameOver]
+	scene: [Game,UI,GameOver]
 }
 
 export default new Phaser.Game(config)

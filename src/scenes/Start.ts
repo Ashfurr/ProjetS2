@@ -15,62 +15,23 @@ export default class Start extends Phaser.Scene
         const bg=this.add.image(0,0,'bg').setOrigin(0,0).setDisplaySize(width,height).setPipeline('Light2D');
         const button = this.add.rectangle(width*0.5005,height*0.6905,400,209,0x000000,0).setStrokeStyle(6,0x000000)
             .setInteractive()
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP,()=> {
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP,()=> 
+            {
                 this.tweencolor(bg)
             })
+        const light = this.lights.addLight(228, 78, 150).setScrollFactor(0.0).setIntensity(3);
+        const light2 = this.lights.addLight(228, 78, 150).setScrollFactor(0.0).setIntensity(3);
         
-            
-    
-            const light = this.lights.addLight(228, 78, 150).setScrollFactor(0.0).setIntensity(3);
-            const light2 = this.lights.addLight(228, 78, 150).setScrollFactor(0.0).setIntensity(3);
-            
-    
         this.lights.enable().setAmbientColor(0xffffff);
-       this.text = this.add.text(10, 10, '', { fill: '#00ff00',fontSize:20 }).setDepth(1);
+       
 
-    this.input.mouse.disableContextMenu();
-
-    this.input.on('pointerdown',  (pointer)=> {
-
-        if (pointer.rightButtonDown())
+        this.input.mouse.disableContextMenu();
+   
+        this.tweenlight(light) 
+        this.time.delayedCall(3000, () => 
         {
-            if (pointer.getDuration() > 500)
-            {
-                this.add.image(pointer.x, pointer.y, 'disk');
-            }
-            else
-            {
-                this.add.image(pointer.x, pointer.y, 'asuna');
-            }
-        }
-        else
-        {
-            if (pointer.getDuration() > 500)
-            {
-                this.add.image(pointer.x, pointer.y, 'tree');
-            }
-            else
-            {
-                this.add.image(pointer.x, pointer.y, 'logo');
-            }
-        }
-
-    }, this);    
-    this.tweenlight(light) 
-    this.time.delayedCall(3000, () => {
-        this.tweenlight(light2) 
-    })   
-}
-update ()
-{
-    var pointer = this.input.activePointer;
-
-    this.text.setText([
-        'x: ' + pointer.worldX,
-        'y: ' + pointer.worldY,
-        'isDown: ' + pointer.isDown,
-        'rightButtonDown: ' + pointer.rightButtonDown()
-    ]);
+            this.tweenlight(light2) 
+        })   
 }
 tweenlight(light){
     const right= this.tweens.add({
@@ -80,30 +41,37 @@ tweenlight(light){
         scale:0.5,
         ease: 'Linear',
         duration: 1500,
-        onComplete: tween=>{
-            const down= this.tweens.add({
+        onComplete: tween=>
+        {
+            const down= this.tweens.add(
+            {
                 targets: light,
                 x:1480,
                 y:936,
                 ease: 'Linear',
                 duration: 1500,
-                onComplete: tween=>{
-                    const left= this.tweens.add({
+                    onComplete: tween=>
+                {
+                    const left= this.tweens.add(
+                    {
                         targets: light,
                         x:150,
                         y:990,
                         scale:0.7,
                         ease: 'Linear',
                         duration: 1500,
-                        onComplete: tween=>{
-                            const up= this.tweens.add({
+                        onComplete: tween=>
+                        {
+                            const up= this.tweens.add(
+                            {
                                 targets: light,
                                 x:228,
                                 y:78,
                                 scale:0.4,
                                 ease: 'Linear',
                                 duration: 1500,
-                                onComplete: tween=>{
+                                onComplete: tween=>
+                                {
                                     this.tweenlight(light)
                                 }
                             })

@@ -19,7 +19,7 @@ private trace = true
         this.platform=[]
         this.platformDisplay=[]
         this.scene.input.mouse.disableContextMenu();
-        const nbplatform=10
+        const nbplatform=15
         const sides = 16;
         const size = 14;
         const distance = size * 2;
@@ -70,14 +70,24 @@ private trace = true
 
             }, this);
             this.scene.input.on('pointerup',  (pointer)=> {
+                if(this.trace===true && this.platform.length>1)
+                {
+                    console.log("desactiver")
+                    this.trace=false
+                    this.scene.time.delayedCall(3000, () => 
+                    {
+                        this.erasePlatform(this.platform)
+                        this.eraseDisplayPlatform(this.platformDisplay)
+                    })
+                }
                 
             })
             this.scene.input.on('pointerdown',  (pointer)=>
             {
                 if(pointer.rightButtonDown())
                 {
-                    this.erasePlatform(this.platform)
-                    this.eraseDisplayPlatform(this.platformDisplay)
+                    //this.erasePlatform(this.platform)
+                    //this.eraseDisplayPlatform(this.platformDisplay)
                 }
                 
             }
@@ -86,8 +96,6 @@ private trace = true
 
     private erasePlatform(platform: MatterJS.BodyType[])
     {
-        this.trace=false
-        console.log(this.trace)
         this.scene.time.addEvent(
         {
             delay: 100,
@@ -110,7 +118,7 @@ private trace = true
     }
     private eraseDisplayPlatform(platform: Phaser.GameObjects.Image[])
     {
-        this.scene.time.addEvent(
+        const time=this.scene.time.addEvent(
         {
             delay: 100,
             callback: () => 
@@ -123,5 +131,9 @@ private trace = true
             },
                 repeat: platform.length ,
         })
+        if(time.hasDispatched)
+        {
+            this.trace=true
+        }
     }
 }

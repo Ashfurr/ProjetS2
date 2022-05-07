@@ -35,6 +35,7 @@ export default class Game extends Phaser.Scene {
 		this.load.atlas('playerback', 'assets/kenney_player.png', 'assets/kenney_player_atlas.json')
 		this.load.atlas('player','assets/player.png','assets/player.json')
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
+		this.load.image('mask','assets/tilesets/mask.png')
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
@@ -51,7 +52,7 @@ export default class Game extends Phaser.Scene {
     var p1 = gui.addFolder('Pointer');
     p1.add(this.input, 'x').listen();
     p1.add(this.input, 'y').listen();
-    p1.open();
+    
 
     var help = {
         line1: 'Left clic to trace platform Right for erase',
@@ -71,18 +72,21 @@ export default class Game extends Phaser.Scene {
     f1.open();
 
 
-		this.add.shader('fond',0,0,7680,1440).setOrigin(0,0)
+		
 		this.cameras.main.setRoundPixels(true);
 		this.scene.launch('ui')
 		this.mechanic= new Mechanic(this)
+	p1.add(this.mechanic,'trace').listen()
+	p1.open();
 		
 		const map = this.make.tilemap({key: 'tilemap'})
 		const tileset = map.addTilesetImage('triangle-imagefinal', 'tiles',64,64)
 
 		const ground = map.createLayer('ground', tileset).setPipeline("Light2D").setDepth(2)
-		const groundbg = map.createLayer('groundbg', tileset).setPipeline("Light2D").setDepth(0)
+		const mask=this.add.image(0,0,'mask').setOrigin(0,0)
+		const groundbg = map.createLayer('groundbg', tileset).setDepth(0)
 		
-		const light = this.lights.addLight(0, 0, 200).setIntensity(7);
+		const light = this.lights.addLight(900, 900, 200).setIntensity(5).setColor(0xB0E9EC);
 
     this.lights.enable().setAmbientColor(0xCAC5C4);
 
@@ -173,12 +177,16 @@ export default class Game extends Phaser.Scene {
 		p3.add(this.player.body.velocity, 'y').listen();
 		p2.open();
 		p3.open()
-		this._cursor=this.add.image(0,0,'cursor')
-		let me =this
+		this._cursor=this.add.image(0,0,'cursor').setDisplaySize(50,50)
+		
 		this.input.on('pointermove',  (pointer)=> {
 				this._cursor.setPosition(pointer.worldX, pointer.worldY);
         });
-
+		const shader=this.add.shader('fond',0,0,7680,1400).setOrigin(0,0).setDepth(-1)
+		const shaderMask=shader.createBitmapMask()
+		mask.setMask(shaderMask)
+		
+		
 	}
 	public get cursorX(){
 		return this._cursor.x

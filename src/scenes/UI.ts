@@ -19,7 +19,7 @@ export default class UI extends Phaser.Scene
    
     create()
     {
-        const cursor=this.add.image(0,0,'cursor')
+        const cursor=this.add.image(0,0,'cursor').setDisplaySize(50,50)
         this.graphics = this.add.graphics()
         this.setHealthBar(100)
 
