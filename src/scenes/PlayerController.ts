@@ -363,7 +363,7 @@ export default class PlayerController {
         })
         this.sprite.anims.create({
             key: 'player-walk',
-            frameRate: 60,
+            frameRate: 120,
             frames: this.sprite.anims.generateFrameNames('player', {start: 1, end: 55, prefix: 'chibiDef.',suffix:'.png',zeroPad:2}),
             repeat: -1,
             
@@ -375,7 +375,7 @@ export default class PlayerController {
         })
         this.sprite.anims.create({
             key: 'player-descent',
-            frameRate: 60,
+            frameRate: 120,
             frames: this.sprite.anims.generateFrameNames('player', {start: 36, end: 59, prefix: 'chibiDefJ.(',suffix:').png',zeroPad:1}),
         })
 

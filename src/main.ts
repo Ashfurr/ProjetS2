@@ -21,13 +21,18 @@ const config: Phaser.Types.Core.GameConfig = {
             height: 720,
         }
 	},
+	fps:{
+		min:40,
+		
+	},
 	physics: {
 		default: 'matter',
 		matter: {
 			debug: true
+			
 		}
 	},
-	scene: [Game,UI,GameOver]
+	scene: [Start,Game,UI,GameOver]
 }
 
 export default new Phaser.Game(config)

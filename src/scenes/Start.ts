@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Button = Phaser.Input.Gamepad.Button;
+import { GUI } from 'dat.gui';
 
 export default class Start extends Phaser.Scene
 {
@@ -11,6 +12,12 @@ export default class Start extends Phaser.Scene
     }
     create()
     {
+        const gui = new GUI();
+
+        var p1 = gui.addFolder('Pointer');
+        p1.add(this.input, 'x').listen();
+        p1.add(this.input, 'y').listen();
+        
         const {width, height}= this.scale
         const bg=this.add.image(0,0,'bg').setOrigin(0,0).setDisplaySize(width,height).setPipeline('Light2D');
         const button = this.add.rectangle(width*0.5005,height*0.6905,400,209,0x000000,0).setStrokeStyle(6,0x000000)
@@ -36,7 +43,7 @@ export default class Start extends Phaser.Scene
 tweenlight(light){
     const right= this.tweens.add({
         targets: light,
-        x:1863,
+        x:1950,
         y:249,
         scale:0.5,
         ease: 'Linear',
