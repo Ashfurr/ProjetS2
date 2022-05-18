@@ -84,6 +84,11 @@ export default class PlayerController {
             
                 return
             }
+            if(this.obstacles.is('saves',body))
+            {
+                console.log(body)
+                return
+            }
             if(this.obstacles.is('snowmen', body))
             {
                 this.lastSnowmen= body.gameObject
@@ -134,12 +139,11 @@ export default class PlayerController {
     update(dt: number) {
         this.stateMachine.update(dt)
         
-        if(this.sprite.body.velocity.y>5){
+        if(this.sprite.body.velocity.y>10){
             this.stateMachine.setState('descent')
         }
-        if(this.sprite.angle>=40 || this.sprite.angle<=-40){
-            this.tweenrotate()
-        }
+
+
     }
     private setHealth(value: number)
     {
@@ -193,7 +197,7 @@ export default class PlayerController {
         this.sprite.play('player-walk')
     }
     private walkOnUpdate() {
-        const speed = 5
+        const speed = 3
         if (this.keys.Q.isDown) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
@@ -246,14 +250,15 @@ export default class PlayerController {
             this.sprite.setVelocityX(speed)
             this.sprite.flipX = false
         }
-        if(this.sprite.body.velocity.y<=0){
+        console.log(this.sprite.body.velocity.y)
+        if(this.sprite.body.velocity.y<0.2){
             this.stateMachine.setState('idle')
         }
 
     }
     private deadOnEnter()
     {
-        this.sprite.setOnCollide(() => {})
+
         this.scene.time.delayedCall(1500, ()=> {
             this.scene.scene.start('game-over')
         })
@@ -344,7 +349,7 @@ export default class PlayerController {
         events.emit('snowmen-stomped',this.lastSnowmen)
         this.stateMachine.setState('idle')
     }
-    private tweenrotate()
+    private tweenRotate()
     {
         this.scene.tweens.add({
             targets: this.sprite,
@@ -363,7 +368,7 @@ export default class PlayerController {
         })
         this.sprite.anims.create({
             key: 'player-walk',
-            frameRate: 120,
+            frameRate: 60,
             frames: this.sprite.anims.generateFrameNames('player', {start: 1, end: 55, prefix: 'chibiDef.',suffix:'.png',zeroPad:2}),
             repeat: -1,
             

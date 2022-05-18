@@ -116,8 +116,8 @@
                  "type":"",
                  "visible":true,
                  "width":64,
-                 "x":320,
-                 "y":848
+                 "x":64,
+                 "y":832
                 }, 
                 {
                  "height":64,
@@ -240,6 +240,39 @@
                  "width":0,
                  "x":0,
                  "y":1408
+                }, 
+                {
+                 "height":368,
+                 "id":49,
+                 "name":"saves",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":80,
+                 "x":224,
+                 "y":624
+                }, 
+                {
+                 "height":0,
+                 "id":50,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":-144,
+                 "y":416
+                }, 
+                {
+                 "height":64,
+                 "id":56,
+                 "name":"saves",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":3120,
+                 "y":848
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -306,7 +339,7 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":0,
+                 "x":-16,
                  "y":976
                 }, 
                 {
@@ -480,16 +513,16 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":45,
+ "nextobjectid":57,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.8.4",
+ "tiledversion":"1.8.5",
  "tileheight":64,
  "tilesets":[
         {
          "columns":120,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/triangle-imagefinal.png",
+         "image":"..\/tilesets\/triangle-imagefinal.png",
          "imageheight":2880,
          "imagewidth":7680,
          "margin":0,

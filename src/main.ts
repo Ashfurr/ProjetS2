@@ -9,6 +9,8 @@ const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
 	width: 1920,
 	height: 1080,
+	antialiasGL:true,
+	powerPreference: "high-performance",
 	scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -22,8 +24,8 @@ const config: Phaser.Types.Core.GameConfig = {
         }
 	},
 	fps:{
-		min:40,
-		
+		min:140,
+		target:140,
 	},
 	physics: {
 		default: 'matter',
@@ -32,7 +34,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			
 		}
 	},
-	scene: [Start,Game,UI,GameOver]
+	scene: [Game,UI,GameOver]
 }
 
 export default new Phaser.Game(config)

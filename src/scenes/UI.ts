@@ -7,6 +7,7 @@ export default class UI extends Phaser.Scene
     private starsCollected=0
     private graphics!: Phaser.GameObjects.Graphics
     private lastHealth=100
+    private fpsText!: Phaser.GameObjects.Text
     constructor() {
         super({
             key: "ui"
@@ -19,6 +20,10 @@ export default class UI extends Phaser.Scene
    
     create()
     {
+        this.fpsText = this.add.text(10, 120, 'FPS: --', {
+            font: 'bold 26px Arial',
+            color: '#ffffff'
+        });
         const cursor=this.add.image(0,0,'cursor').setDisplaySize(50,50)
         this.graphics = this.add.graphics()
         this.setHealthBar(100)
@@ -33,8 +38,7 @@ export default class UI extends Phaser.Scene
             events.off('star-collected',this.handleStarCollected,this )
         })
         this.input.on('pointermove',  (pointer)=> {
-            cursor.x=pointer.worldX
-            cursor.y=pointer.worldY;
+            cursor.setPosition(pointer.worldX,pointer.worldY)
         });
     }
     
@@ -71,6 +75,9 @@ export default class UI extends Phaser.Scene
     {
         ++this.starsCollected
         this.starsLabel.text= `Stars: ${this.starsCollected}`
+    }
+    update(time: number, delta: number): void {
+        this.fpsText.setText('FPS: ' + (1000/delta).toFixed(3))
     }
     
 }

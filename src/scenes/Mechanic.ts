@@ -48,7 +48,7 @@ private trace = true
                     const y =  this.scene.cursorY;
                 
 
-                    if (Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y) > distance && Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y)<distance*1.5 && this.platform.length<nbplatform)
+                    if (Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y) > distance && Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y)<distance*3 && this.platform.length<nbplatform)
                     {
                         lastPosition.x = x;
                         lastPosition.y = y;

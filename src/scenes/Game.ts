@@ -16,7 +16,7 @@ export default class Game extends Phaser.Scene {
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
 	private _cursor!: Phaser.GameObjects.Image
-	private neon!:Phaser.Physics.Matter.Sprite
+	private neon!: Phaser.Physics.Matter.Sprite
 
 	constructor() {
 		super('game')
@@ -38,6 +38,8 @@ export default class Game extends Phaser.Scene {
 		this.load.image('mask','assets/tilesets/mask.png')
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
+		this.load.image("fx_blue", 'assets/images/blue.png')
+		this.load.image("fx_purple", 'assets/images/sparkle1.png')
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
 		this.load.image("cursor", 'assets/images/cursor.png')
 		this.load.glsl("fond", 'assets/images/marble.glsl.js')
@@ -45,22 +47,22 @@ export default class Game extends Phaser.Scene {
 	}
 
 	create() {
-	var cam = this.cameras.main;
+	const cam = this.cameras.main;
 
     const gui = new GUI();
 
-    var p1 = gui.addFolder('Pointer');
+    const p1 = gui.addFolder('Pointer');
     p1.add(this.input, 'x').listen();
     p1.add(this.input, 'y').listen();
     
 
-    var help = {
+    const help = {
         line1: 'Left clic to trace platform Right for erase',
         line2: 'z to dezoom',
         line3: 'Q and D for move Z for jump',
     }
 
-    var f1 = gui.addFolder('Camera');
+    const f1 = gui.addFolder('Camera');
     f1.add(cam, 'x').listen();
     f1.add(cam, 'y').listen();
     f1.add(cam, 'scrollX').listen();
@@ -107,8 +109,9 @@ export default class Game extends Phaser.Scene {
 		const colliderLayer = map.getObjectLayer('collider')
 		colliderLayer.objects.forEach(objData=>{
 		const{ x = 0 , y = 0 ,name='', width=0,height=0, polygon = [] } = objData
-		let arrayY = []
+		const arrayY = []
 		for(let i=0 ; i<polygon.length;i++){
+			// @ts-ignore
 			arrayY.push(polygon[i].y)
 		}
 		const collider = this.add.polygon(x,y,polygon).setOrigin(0,0).setPipeline('Light2D')
@@ -128,7 +131,6 @@ export default class Game extends Phaser.Scene {
 				{
 					this.player = this.matter.add.sprite(x,y, 'player')
 						.setDisplaySize(150,150)
-						.setFriction(1)
 						.setDepth(1)
 					this.player.setCircle(80)
 					
@@ -138,6 +140,30 @@ export default class Game extends Phaser.Scene {
 				}
 				case "snowman":
 				{
+					break
+				}
+				case "saves":
+				{
+					const rect=this.matter.add.rectangle(x+(width*0.5),y+(height*0.5), width, height,{
+						isStatic:true,
+						isSensor:true,
+					})
+					const fxSave=this.add.particles('fx_blue')
+					const emmiterSave=fxSave.createEmitter({
+						x:{min:x,max:x+width},
+						y:y+height/2,
+						speed: {min:200,max:600},
+						angle: [-85,-95,85,95],
+						scale:{ min:0.2, max: 0.6},
+						lifespan: { min: 1000, max: 5000 },
+						blendMode:'ADD',
+						frequency:50,
+						bounds: { x: x, y: y, w: width, h: height },
+						alpha:{min:1, max:0.8},
+						tint:[0x0178EE,0xB801EE,0xDD9D00],
+						bounce:0.5,
+					})
+					this.obstacles.add('saves', rect)
 					break
 				}
 				case 'star':
@@ -169,10 +195,10 @@ export default class Game extends Phaser.Scene {
 				}
 			}
 		})
-		var p2 = gui.addFolder('Player');
+		const p2 = gui.addFolder('Player');
 		p2.add(this.player, 'x').listen();
 		p2.add(this.player, 'y').listen();
-		var p3 = gui.addFolder('PlayerVelocity');
+		const p3 = gui.addFolder('PlayerVelocity');
 		p3.add(this.player.body.velocity, 'x').listen();
 		p3.add(this.player.body.velocity, 'y').listen();
 		p2.open();
