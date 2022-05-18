@@ -24,12 +24,14 @@ const config: Phaser.Types.Core.GameConfig = {
         }
 	},
 	fps:{
-		min:140,
+		min:120,
 		target:140,
+		forceSetTimeOut:true,
 	},
 	physics: {
 		default: 'matter',
 		matter: {
+
 			debug: true
 			
 		}

@@ -2,6 +2,8 @@ import Phaser from "phaser"
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "~/scenes/ObstaclesController";
+import { World } from "matter";
+import Save from "./Save";
 
 type CursorsKeys= Phaser.Types.Input.Keyboard.CursorKeys
 
@@ -10,17 +12,17 @@ export default class PlayerController {
     private sprite: Phaser.Physics.Matter.Sprite
     private stateMachine: StateMachine
     private cursors: CursorsKeys
+    private save!:Save
     private obstacles: ObstaclesController
     private health = 100
     private keys
     private center = true
-    
-
-
+   
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
+    private lastSave?: Phaser.Physics.Matter.Sprite
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
-        console.log(this.center)
+        
         this.scene = scene
         this.sprite = sprite
         this.cursors = cursors
@@ -31,12 +33,8 @@ export default class PlayerController {
 		this.scene.cameras.main.setDeadzone(200,130);
         this.sprite.setFixedRotation()
         
-        
-
-        
-
-
         this.stateMachine = new StateMachine(this, 'player')
+        events.on('emit-save',this.handleDeath,this)
 
         this.stateMachine.addState('idle', {
             onEnter: this.idleOnEnter,
@@ -86,13 +84,18 @@ export default class PlayerController {
             }
             if(this.obstacles.is('saves',body))
             {
-                console.log(body)
+                this.lastSave=body.gameObject
+                events.emit('save',[this.sprite.x,this.sprite.y])
+                this.scene.matter.world.remove(body)
+                
+                
+                
                 return
             }
-            if(this.obstacles.is('snowmen', body))
+            if(this.obstacles.is('snowman', body))
             {
                 this.lastSnowmen= body.gameObject
-                if(this.sprite.y+this.sprite.height/2 < body.position.y)
+                if(this.sprite.y+60 < body.position.y)
                 {
                     this.stateMachine.setState('snowmen-stomp')
                 }
@@ -103,6 +106,7 @@ export default class PlayerController {
                 return
             }
           
+            // @ts-ignore
             if(bodyB.name==='floor'||body.label==='floor')
             { 
                 if (this.stateMachine.isCurrentState('descent'))
@@ -158,6 +162,7 @@ export default class PlayerController {
     }
 
     private idleOnEnter() {
+        
         this.sprite.play('player-idle')
         //this.sprite.setFriction(1)
         
@@ -172,14 +177,14 @@ export default class PlayerController {
             {
                 this.scene.cameras.main.zoom-=0.001 
             }
-            console.log(this.scene.cameras.main.zoom)
+            
             this.center=false
-            console.log("center off")
+            
         }
         if(this.keys.Z.isUp  && this.center === false){
             this.scene.cameras.main.zoom=1
             this.center=true 
-            console.log("center")
+            
         }
        
 
@@ -197,7 +202,7 @@ export default class PlayerController {
         this.sprite.play('player-walk')
     }
     private walkOnUpdate() {
-        const speed = 3
+        const speed = 4
         if (this.keys.Q.isDown) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
@@ -250,19 +255,21 @@ export default class PlayerController {
             this.sprite.setVelocityX(speed)
             this.sprite.flipX = false
         }
-        console.log(this.sprite.body.velocity.y)
+        
         if(this.sprite.body.velocity.y<0.2){
             this.stateMachine.setState('idle')
         }
 
     }
     private deadOnEnter()
-    {
-
-        this.scene.time.delayedCall(1500, ()=> {
-            this.scene.scene.start('game-over')
-        })
-
+    { 
+        events.emit('player-dead')
+    }
+    private handleDeath([x,y]){
+        this.sprite.x=x
+        this.sprite.y=y
+        this.health=100
+        console.log(x,y)
     }
     private spikeHitOnEnter(){
         this.sprite.setVelocityY(-12)
@@ -294,13 +301,13 @@ export default class PlayerController {
         })
 
         this.stateMachine.setState('idle')
-        this.setHealth(this.health-10)
+        this.setHealth(this.health-50)
     }
     private snowmenHitOnEnter()
     {
         if(this.lastSnowmen)
         {
-            if (this.sprite.x+5 < this.lastSnowmen.x)
+            if (this.sprite.x < this.lastSnowmen.x)
             {
                 this.sprite.setVelocityX(-20)
             } else
@@ -349,15 +356,6 @@ export default class PlayerController {
         events.emit('snowmen-stomped',this.lastSnowmen)
         this.stateMachine.setState('idle')
     }
-    private tweenRotate()
-    {
-        this.scene.tweens.add({
-            targets: this.sprite,
-            rotation:0,
-            ease: 'Linear',
-            duration: 100,
-    })
-    }
 
     private createAnimations() {
         this.sprite.anims.create({
@@ -368,7 +366,7 @@ export default class PlayerController {
         })
         this.sprite.anims.create({
             key: 'player-walk',
-            frameRate: 60,
+            frameRate: 90,
             frames: this.sprite.anims.generateFrameNames('player', {start: 1, end: 55, prefix: 'chibiDef.',suffix:'.png',zeroPad:2}),
             repeat: -1,
             

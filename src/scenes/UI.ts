@@ -20,6 +20,7 @@ export default class UI extends Phaser.Scene
    
     create()
     {
+
         this.fpsText = this.add.text(10, 120, 'FPS: --', {
             font: 'bold 26px Arial',
             color: '#ffffff'

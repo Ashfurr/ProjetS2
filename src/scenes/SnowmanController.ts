@@ -105,13 +105,13 @@ export default class SnowmanController
         this.sprite.anims.create({
             key: "snowmen-idle",
             frameRate: 4,
-            frames: [{key: 'player', frame: 'robo_player_0'}],
+            frames: [{key: 'snowman', frame: 'robo_player_0'}],
             repeat: -1,
         })
         this.sprite.anims.create({
             key: 'snowmen-walk',
             frameRate: 4,
-            frames: this.sprite.anims.generateFrameNames('player', {start: 2, end: 3, prefix: 'robo_player_'}),
+            frames: this.sprite.anims.generateFrameNames('snowman', {start: 2, end: 3, prefix: 'robo_player_'}),
             repeat: -1,
         })
     }

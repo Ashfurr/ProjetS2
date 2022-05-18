@@ -5,6 +5,7 @@ import SnowmanController from "~/scenes/SnowmanController";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import Mechanic from './Mechanic';
 import { GUI } from 'dat.gui';
+import Save from './Save';
 
 
 export default class Game extends Phaser.Scene {
@@ -12,6 +13,8 @@ export default class Game extends Phaser.Scene {
 
 	private player!: Phaser.Physics.Matter.Sprite
 	private playerController?: PlayerController
+	private SnowmanController?:SnowmanController
+	public save:Save[]=[]
 	private obstacles!: ObstaclesController
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
@@ -26,6 +29,8 @@ export default class Game extends Phaser.Scene {
 		this.cursors=this.input.keyboard.createCursorKeys()
 		this.obstacles = new ObstaclesController()
 		this.snowmen=[]
+		this.save=[]
+
 		this.events.once(Phaser.Scenes.Events.SHUTDOWN,() => {
 			this.destroy()
 		})
@@ -34,8 +39,11 @@ export default class Game extends Phaser.Scene {
 	preload() {
 		this.load.atlas('playerback', 'assets/kenney_player.png', 'assets/kenney_player_atlas.json')
 		this.load.atlas('player','assets/player.png','assets/player.json')
+		this.load.atlas('snowman','assets/kenney_player.png','assets/kenney_player_atlas.json')
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
 		this.load.image('mask','assets/tilesets/mask.png')
+		this.load.image('save','assets/images/autre tileset/Block_Blue.png')
+
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
 		this.load.image("fx_blue", 'assets/images/blue.png')
@@ -47,6 +55,7 @@ export default class Game extends Phaser.Scene {
 	}
 
 	create() {
+		
 	const cam = this.cameras.main;
 
     const gui = new GUI();
@@ -139,31 +148,28 @@ export default class Game extends Phaser.Scene {
 					break
 				}
 				case "snowman":
-				{
+				{	
+					const snowman = this.matter.add.sprite(x, y, 'snowman')
+						.setCircle(40)
+						// @ts-ignore
+						.setFixedRotation()
+
+					this.snowmen.push(new SnowmanController(this, snowman))
+					this.obstacles.add('snowman', snowman.body as MatterJS.BodyType)
 					break
 				}
 				case "saves":
 				{
-					const rect=this.matter.add.rectangle(x+(width*0.5),y+(height*0.5), width, height,{
+					const rect=this.matter.add.sprite(x+width*0.5,y+height*0.5,"save",undefined,{
 						isStatic:true,
 						isSensor:true,
 					})
-					const fxSave=this.add.particles('fx_blue')
-					const emmiterSave=fxSave.createEmitter({
-						x:{min:x,max:x+width},
-						y:y+height/2,
-						speed: {min:200,max:600},
-						angle: [-85,-95,85,95],
-						scale:{ min:0.2, max: 0.6},
-						lifespan: { min: 1000, max: 5000 },
-						blendMode:'ADD',
-						frequency:50,
-						bounds: { x: x, y: y, w: width, h: height },
-						alpha:{min:1, max:0.8},
-						tint:[0x0178EE,0xB801EE,0xDD9D00],
-						bounce:0.5,
-					})
-					this.obstacles.add('saves', rect)
+					
+					
+					this.obstacles.add('saves', rect.body as MatterJS.BodyType)
+					this.save.push(new Save(this,rect))
+					
+					
 					break
 				}
 				case 'star':
@@ -203,23 +209,14 @@ export default class Game extends Phaser.Scene {
 		p3.add(this.player.body.velocity, 'y').listen();
 		p2.open();
 		p3.open()
-		this._cursor=this.add.image(0,0,'cursor').setDisplaySize(50,50)
 		
-		this.input.on('pointermove',  (pointer)=> {
-				this._cursor.setPosition(pointer.worldX, pointer.worldY);
-        });
 		const shader=this.add.shader('fond',0,0,7680,1400).setOrigin(0,0).setDepth(-1)
 		const shaderMask=shader.createBitmapMask()
 		mask.setMask(shaderMask)
 		
 		
 	}
-	public get cursorX(){
-		return this._cursor.x
-	}
-	public get cursorY(){
-		return this._cursor.y
-	}
+	
 	destroy()
 		{
 			this.scene.stop('ui')
@@ -228,12 +225,10 @@ export default class Game extends Phaser.Scene {
 	
 	update(t: number, dt: number)
 		{
+			
 			this.playerController?.update(dt)
-			if (Phaser.Input.Keyboard.JustDown(this.cursors.space))
-			{	
 			this.snowmen.forEach(snowman => snowman.update(dt))
 		}
 	}
 	
-	
-}
+
