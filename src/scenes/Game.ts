@@ -163,10 +163,10 @@ export default class Game extends Phaser.Scene {
 					const rect=this.matter.add.sprite(x+width*0.5,y+height*0.5,"save",undefined,{
 						isStatic:true,
 						isSensor:true,
-					})
-					
-					
-					this.obstacles.add('saves', rect.body as MatterJS.BodyType)
+					}).setSize(100,200).setDisplaySize(100,200)
+
+
+					rect.setData("type","rect")
 					this.save.push(new Save(this,rect))
 					
 					

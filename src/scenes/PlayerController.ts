@@ -82,16 +82,7 @@ export default class PlayerController {
             
                 return
             }
-            if(this.obstacles.is('saves',body))
-            {
-                this.lastSave=body.gameObject
-                events.emit('save',[this.sprite.x,this.sprite.y])
-                this.scene.matter.world.remove(body)
-                
-                
-                
-                return
-            }
+
             if(this.obstacles.is('snowman', body))
             {
                 this.lastSnowmen= body.gameObject
@@ -135,6 +126,9 @@ export default class PlayerController {
                     sprite.destroy()
                     break
                 }
+                case "rect":
+                    events.emit('save-taken')
+                    sprite.destroy()
             }
         })
     }
