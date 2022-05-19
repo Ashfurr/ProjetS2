@@ -9,6 +9,7 @@ import Save from './Save';
 
 
 
+
 export default class Game extends Phaser.Scene {
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
@@ -27,6 +28,7 @@ export default class Game extends Phaser.Scene {
 	}
 	init(){
 		
+		this.matter.bodies.
 		this.cursors=this.input.keyboard.createCursorKeys()
 		this.obstacles = new ObstaclesController()
 		this.snowmen=[]
@@ -78,6 +80,8 @@ export default class Game extends Phaser.Scene {
     f1.add(cam, 'scrollX').listen();
     f1.add(cam, 'scrollY').listen();
     f1.add(cam, 'zoom', 0.1, 2).step(0.1).listen();
+	f1.add(this.matter.world,'drawDebug').listen();
+	f1.add(this.matter.world.debugGraphic,'visible').listen();
     f1.add(help, 'line1');
     f1.add(help, 'line2');
     f1.add(help, 'line3');
@@ -154,9 +158,12 @@ export default class Game extends Phaser.Scene {
 						.setCircle(40)
 						// @ts-ignore
 						.setFixedRotation()
-
-					this.snowmen.push(new SnowmanController(this, snowman))
+					
+					let playersensor= this.matter.add.rectangle(x,y,500,500,{isSensor:true,isStatic:true})
+					this.obstacles.add('trigger', playersensor)
+					this.snowmen.push(new SnowmanController(this, snowman,playersensor))
 					this.obstacles.add('snowman', snowman.body as MatterJS.BodyType)
+					
 					break
 				}
 				case "saves":

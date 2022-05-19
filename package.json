@@ -4,6 +4,8 @@
   "description": "mon projet de platformer",
   "dependencies": {
     "latest": "^0.2.0",
+    "matter": "^0.1.0",
+    "matter-js": "^0.18.0",
     "phaser": "^3.60.0-beta.6"
   },
   "devDependencies": {

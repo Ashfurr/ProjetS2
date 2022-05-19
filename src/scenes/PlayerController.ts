@@ -84,6 +84,13 @@ export default class PlayerController {
             
                 return
             }
+            if (this.obstacles.is('trigger', body))
+            {
+                
+            
+                return
+            }
+
 
             if(this.obstacles.is('snowman', body))
             {
@@ -108,8 +115,7 @@ export default class PlayerController {
                 }
                 return
             }
-            
-            
+
             const sprite = gameObject as Phaser.Physics.Matter.Sprite
             const type = sprite.getData('type')
             switch(type)

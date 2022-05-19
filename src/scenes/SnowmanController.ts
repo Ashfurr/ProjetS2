@@ -1,18 +1,24 @@
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
-
+import MatterJS from "matter";
+import ObstaclesController from "./ObstaclesController";
 export default class SnowmanController
 {
+    
     private sprite: Phaser.Physics.Matter.Sprite
     private scene: Phaser.Scene
     private stateMachine: StateMachine
-
+    private obstacles!: ObstaclesController
     private moveTime = 0
 
-    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite) {
+    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite,trigger) {
+        
         this.scene = scene
         this.sprite= sprite
         this.createAnimations()
+         
+        
+        
         this.stateMachine= new StateMachine(this, 'snowman')
 
         this.stateMachine.addState('idle',{
@@ -118,5 +124,6 @@ export default class SnowmanController
     update(dt: number)
     {
         this.stateMachine.update(dt)
+        
     }
 }
