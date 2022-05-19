@@ -20,20 +20,16 @@ export default class Game extends Phaser.Scene {
 	private obstacles!: ObstaclesController
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
-	private _cursor!: Phaser.GameObjects.Image
 	private neon!: Phaser.Physics.Matter.Sprite
 
 	constructor() {
 		super('game')
 	}
 	init(){
-		
-		this.matter.bodies.
 		this.cursors=this.input.keyboard.createCursorKeys()
 		this.obstacles = new ObstaclesController()
 		this.snowmen=[]
 		this.save=[]
-
 		this.events.once(Phaser.Scenes.Events.SHUTDOWN,() => {
 			this.destroy()
 		})
@@ -159,9 +155,9 @@ export default class Game extends Phaser.Scene {
 						// @ts-ignore
 						.setFixedRotation()
 					
-					let playersensor= this.matter.add.rectangle(x,y,500,500,{isSensor:true,isStatic:true})
-					this.obstacles.add('trigger', playersensor)
-					this.snowmen.push(new SnowmanController(this, snowman,playersensor))
+					
+					
+					this.snowmen.push(new SnowmanController(this, snowman))
 					this.obstacles.add('snowman', snowman.body as MatterJS.BodyType)
 					
 					break

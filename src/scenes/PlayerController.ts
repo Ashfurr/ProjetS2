@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "~/scenes/ObstaclesController";
+import SnowmanController from "./SnowmanController";
 
 
 type CursorsKeys= Phaser.Types.Input.Keyboard.CursorKeys
@@ -76,8 +77,21 @@ export default class PlayerController {
             const bodyB = data.bodyA as MatterJS.BodyType
             const gameObject = body.gameObject
             const gameObject1=bodyB.gameObject
+            if(body.label==='bodyEnnemy')
+            {
+                console.log(body)
+                this.lastSnowmen= body.gameObject
+                if(this.sprite.y+60 < body.position.y)
+                {
+                    this.stateMachine.setState('snowmen-stomp')
+                }
+                else
+                {
+                    this.stateMachine.setState('snowmen-hit')
+                }
+                return
+            }
         
-         
             if (this.obstacles.is('spikes', body))
             {
                 this.stateMachine.setState('spike-hit')
@@ -91,20 +105,6 @@ export default class PlayerController {
                 return
             }
 
-
-            if(this.obstacles.is('snowman', body))
-            {
-                this.lastSnowmen= body.gameObject
-                if(this.sprite.y+60 < body.position.y)
-                {
-                    this.stateMachine.setState('snowmen-stomp')
-                }
-                else
-                {
-                    this.stateMachine.setState('snowmen-hit')
-                }
-                return
-            }
           
             // @ts-ignore
             if(bodyB.name==='floor'||body.label==='floor')

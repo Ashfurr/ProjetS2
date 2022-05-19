@@ -1,6 +1,7 @@
+import Phaser from "phaser";
+import * as MatterJS from 'matter-js';
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
-import MatterJS from "matter";
 import ObstaclesController from "./ObstaclesController";
 export default class SnowmanController
 {
@@ -11,12 +12,27 @@ export default class SnowmanController
     private obstacles!: ObstaclesController
     private moveTime = 0
 
-    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite,trigger) {
+    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite) {
         
         this.scene = scene
         this.sprite= sprite
         this.createAnimations()
-         
+        const ennemyController={
+            sprite,
+            sensors: {
+                center: MatterJS.BodyType
+            },
+        }
+        const ennemybody=this.scene.matter.bodies.circle(sprite.x,sprite.y,50,{label:'bodyEnnemy'})
+        ennemyController.sensors.center = this.scene.matter.bodies.rectangle(sprite.x,sprite.y,250,250,{isSensor:true})
+        const compoundenemy = this.scene.matter.body.create({parts:[ennemybody,ennemyController.sensors.center ]})
+        ennemyController.sprite
+            .setExistingBody(compoundenemy)
+            .setFixedRotation()
+
+
+
+
         
         
         this.stateMachine= new StateMachine(this, 'snowman')
