@@ -2,8 +2,7 @@ import Phaser from "phaser"
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "~/scenes/ObstaclesController";
-import { World } from "matter";
-import Save from "./Save";
+
 
 type CursorsKeys= Phaser.Types.Input.Keyboard.CursorKeys
 
@@ -12,12 +11,11 @@ export default class PlayerController {
     private sprite: Phaser.Physics.Matter.Sprite
     private stateMachine: StateMachine
     private cursors: CursorsKeys
-    private save!:Save
     private obstacles: ObstaclesController
     private health = 100
     private keys
     private center = true
-   
+    private save={x:0,y:0}
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
     private lastSave?: Phaser.Physics.Matter.Sprite
 
@@ -34,7 +32,7 @@ export default class PlayerController {
         this.sprite.setFixedRotation()
         
         this.stateMachine = new StateMachine(this, 'player')
-        events.on('emit-save',this.handleDeath,this)
+
 
         this.stateMachine.addState('idle', {
             onEnter: this.idleOnEnter,
@@ -66,6 +64,10 @@ export default class PlayerController {
             })
             .addState('death',{
                 onEnter: this.deadOnEnter,
+            })
+            .addState('saved',{
+                onEnter: this.saveOnEnter,
+                
             })
             .setState('idle')
 
@@ -127,7 +129,8 @@ export default class PlayerController {
                     break
                 }
                 case "rect":
-                    events.emit('save-taken')
+                    this.stateMachine.setState('saved')
+                    sprite.emit("disabled")
                     sprite.destroy()
             }
         })
@@ -156,31 +159,31 @@ export default class PlayerController {
     }
 
     private idleOnEnter() {
-        
+
         this.sprite.play('player-idle')
         //this.sprite.setFriction(1)
-        
+
     }
     private idleOnUpdate(){
-        
+
         if (this.keys.Q.isDown || this.keys.D.isDown){
             this.stateMachine.setState('walk')
         }
         if(this.keys.Z.isDown){
             if(this.scene.cameras.main.zoom>0.4)
             {
-                this.scene.cameras.main.zoom-=0.001 
+                this.scene.cameras.main.zoom-=0.001
             }
-            
+
             this.center=false
-            
+
         }
         if(this.keys.Z.isUp  && this.center === false){
             this.scene.cameras.main.zoom=1
-            this.center=true 
-            
+            this.center=true
+
         }
-       
+
 
         const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
         if (spaceJustPressed) {
@@ -224,7 +227,7 @@ export default class PlayerController {
     {
         this.sprite.setRotation(0)
         const speed = 5
-        
+
         if (this.keys.Q.isDown) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
@@ -241,7 +244,7 @@ export default class PlayerController {
     }
     private descentOnUpdate(){
         const speed = 5
-        
+
         if (this.keys.Q.isDown) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
@@ -249,22 +252,27 @@ export default class PlayerController {
             this.sprite.setVelocityX(speed)
             this.sprite.flipX = false
         }
-        
+
         if(this.sprite.body.velocity.y<0.2){
             this.stateMachine.setState('idle')
         }
 
     }
     private deadOnEnter()
-    { 
-        events.emit('player-dead')
-    }
-    private handleDeath([x,y]){
-        this.sprite.x=x
-        this.sprite.y=y
+    {
+        this.sprite.x=this.save.x
+        this.sprite.y=this.save.y
         this.health=100
-        console.log(x,y)
+        events.emit('health-changed', this.health)
+        this.stateMachine.setState('idle')
+
     }
+    private saveOnEnter(){
+        this.save.x = this.sprite.x
+        this.save.y= this.sprite.y
+        this.stateMachine.setState('idle')
+    }
+
     private spikeHitOnEnter(){
         this.sprite.setVelocityY(-12)
         const startColor = Phaser.Display.Color.ValueToColor(0xffffff)

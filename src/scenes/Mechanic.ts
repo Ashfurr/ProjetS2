@@ -9,7 +9,7 @@ private previous!: MatterJS.BodyType
 private current!: MatterJS.BodyType
 private graphics!: Phaser.GameObjects.Graphics
 private platform: MatterJS.BodyType[]
-private platformDisplay:Phaser.GameObjects.Image[]
+private platformDisplay: Phaser.GameObjects.Image[]
 private constraint!: MatterJS.ConstraintType
 private nbplatform=10
 private trace = true
@@ -32,8 +32,8 @@ private trace = true
             {
                 if(this.platform.length<nbplatform && this.trace===true)
                 {
-                    lastPosition.x = this.scene.cursorX;
-                    lastPosition.y = this.scene.cursorY;
+                    lastPosition.x = pointer.worldX;
+                    lastPosition.y = pointer.worldY;
                     this.previous = this.scene.matter.add.polygon(pointer.worldX, pointer.worldY, sides, size, pinOptions);
                     const image= this.scene.add.image(pointer.worldX, pointer.worldY,'cursor').setDisplaySize(32,32)
                     this.platform.push(this.previous)
@@ -44,8 +44,8 @@ private trace = true
             this.scene.input.on('pointermove',  (pointer)=> {
                 if (pointer.isDown)
                 {
-                    const x =  this.scene.cursorX;
-                    const y =  this.scene.cursorY;
+                    const x =  pointer.worldX;
+                    const y =  pointer.worldY;
                 
 
                     if (Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y) > distance && Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y)<distance*3 && this.platform.length<nbplatform)

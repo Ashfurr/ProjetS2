@@ -8,13 +8,14 @@ import { GUI } from 'dat.gui';
 import Save from './Save';
 
 
+
 export default class Game extends Phaser.Scene {
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
 	private player!: Phaser.Physics.Matter.Sprite
 	private playerController?: PlayerController
-	private SnowmanController?:SnowmanController
-	public save:Save[]=[]
+	private SnowmanController?: SnowmanController
+	public save: Save[]=[]
 	private obstacles!: ObstaclesController
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
@@ -138,7 +139,7 @@ export default class Game extends Phaser.Scene {
 			{
 				case 'playerspawn':
 				{
-					this.player = this.matter.add.sprite(x,y, 'player')
+					this.player = this.matter.add.sprite(x,y, 'player').setPipeline('Light2D')
 						.setDisplaySize(150,150)
 						.setDepth(1)
 					this.player.setCircle(80)
@@ -160,6 +161,7 @@ export default class Game extends Phaser.Scene {
 				}
 				case "saves":
 				{
+					
 					const rect=this.matter.add.sprite(x+width*0.5,y+height*0.5,"save",undefined,{
 						isStatic:true,
 						isSensor:true,
@@ -168,6 +170,7 @@ export default class Game extends Phaser.Scene {
 
 					rect.setData("type","rect")
 					this.save.push(new Save(this,rect))
+					console.log(this.save)
 					
 					
 					break
