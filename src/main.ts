@@ -7,9 +7,10 @@ import Start from './scenes/Start';
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
+	
 	width: 1920,
 	height: 1080,
-	antialiasGL:true,
+	antialias:true,
 	powerPreference: "high-performance",
 	scale: {
         mode: Phaser.Scale.FIT,
@@ -31,9 +32,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	physics: {
 		default: 'matter',
 		matter: {
-
-			debug: true
-			
+			debug: true	
 		}
 	},
 	scene: [Game,UI,GameOver]
