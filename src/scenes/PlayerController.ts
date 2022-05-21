@@ -266,11 +266,49 @@ export default class PlayerController {
     }
     private deadOnEnter()
     {
-        this.sprite.x=this.save.x
-        this.sprite.y=this.save.y
         this.health=100
         events.emit('health-changed', this.health)
-        this.stateMachine.setState('idle')
+        this.sprite.setToSleep()
+        this.sprite.setSensor(true)
+        this.sprite.setVisible(false)
+        const light = this.scene.lights.addLight(undefined,undefined,400,undefined,6);
+        this.scene.time.delayedCall(500,()=>{
+            const fxSaveTravel = this.scene.add.particles('particleSave').setPipeline('Light2D').setDepth(2)
+            const emmiterSave = fxSaveTravel.createEmitter(
+                {
+                    speed: {min: 400, max: 600},
+                    angle: {min:0, max:360},
+                    scale: {start: 0.1, end: 0.2},
+                    lifespan: {min: 500, max: 1000},
+                    frequency: 150,
+                    tint: [0x003AFE, 0xB801EE, 0xDD9D00],
+                    blendMode:"ADD",
+                    rotate:{start:0,end:760}  
+                });
+            emmiterSave.startFollow(this.sprite)
+            let tween = this.scene.tweens.add(
+                {
+                    targets: this.sprite,
+                    x: this.save.x,
+                    y:this.save.y,
+                    ease: 'Power1',
+                    duration: 3000,
+                    onUpdate:()=>{
+                        light.setPosition(this.sprite.x,this.sprite.y)
+                    },
+                    onComplete:()=>{
+                        this.sprite.setAwake()
+                        this.sprite.setSensor(false)
+                        this.sprite.setVisible(true)
+                        this.stateMachine.setState('idle')
+                        emmiterSave.stop()
+                        light.setVisible(false)
+                    }
+                })
+                
+        })
+        
+        
 
     }
     private saveOnEnter(){

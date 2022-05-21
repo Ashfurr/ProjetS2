@@ -35,14 +35,7 @@ export default class Save {
             })
             starsFxContainer.add(fxSave);
         });
-
-        
-        
-        
-            
-        
-            
-        
+  
     }
     handleFx(x,y){
         this.emmiterSave.explode(500,x,y)
