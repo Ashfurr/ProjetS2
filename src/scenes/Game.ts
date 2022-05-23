@@ -43,6 +43,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
 		this.load.image('mask','assets/tilesets/mask.png')
 		this.load.image('save','assets/images/autre tileset/Block_Blue.png')
+		this.load.image('projectil','assets/images/autre tileset/Coin_Front.png')
 		this.load.image('particleSave','assets/images/particlesSave.png')
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
@@ -139,10 +140,10 @@ export default class Game extends Phaser.Scene {
 			{
 				case 'playerspawn':
 				{
-					this.player = this.matter.add.sprite(x,y, 'player').setPipeline('Light2D')
+					this.player = this.matter.add.sprite(x,y, 'player',undefined).setPipeline('Light2D')
 						.setDisplaySize(150,150)
 						.setDepth(1)
-					this.player.setCircle(80)
+					this.player.setCircle(80,{label:'player'})
 					this.player.setFriction(1)
 					this.player.setFrictionStatic(10)
 					
@@ -156,6 +157,7 @@ export default class Game extends Phaser.Scene {
 						.setCircle(40)
 						// @ts-ignore
 						.setFixedRotation()
+						
 					
 					
 					

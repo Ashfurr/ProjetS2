@@ -11,6 +11,7 @@ export default class SnowmanController
     private stateMachine: StateMachine
     private obstacles!: ObstaclesController
     private moveTime = 0
+    private cible={x:0,y:0}
 
     constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite) {
         
@@ -29,11 +30,9 @@ export default class SnowmanController
         ennemyController.sprite
             .setExistingBody(compoundenemy)
             .setFixedRotation()
+            
 
-            this.scene.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
-                if(bodyA.label==='bodyEnnemy'){
-                console.log(bodyA,bodyB)};
-            });
+            
         
 
         this.stateMachine= new StateMachine(this, 'snowman')
@@ -49,10 +48,22 @@ export default class SnowmanController
                 onEnter: this.moveRightOnEnter,
                 onUpdate:this.moveRightOnUpdate
             })
+            .addState('fire',{
+                onEnter: this.fireOnEnter,
+            
+            })
             .addState('dead')
             .setState('idle')
         events.on('snowmen-stomped', this.handleStomped, this)
+        this.scene.matter.world.on('collisionstart',(event, bodyA, bodyB)=> {
+            if(bodyA.label==='player'||bodyB===ennemyController.sensors.center){
+                this.stateMachine.setState('fire')
+                bodyA.x=this.cible.x
+                bodyA.y=this.cible.y
+            }
+        });
     }
+    
     destroy()
     {
         events.off('snowmen-stomped', this.handleStomped,this)
@@ -102,6 +113,10 @@ export default class SnowmanController
             this.stateMachine.setState('move-left')
         }
     }
+    private fireOnEnter(){
+        this.scene.matter.add.sprite(this.sprite.x,this.sprite.y,'projectil')
+        //this.scene.physics.moveToObject()
+    }
     private handleStomped(snowmen: Phaser.Physics.Matter.Sprite)
     {
         if(this.sprite!== snowmen)
@@ -140,7 +155,7 @@ export default class SnowmanController
     }
     update(dt: number)
     {
-        this.stateMachine.update(dt)
+        //this.stateMachine.update(dt)
         
     }
 }
