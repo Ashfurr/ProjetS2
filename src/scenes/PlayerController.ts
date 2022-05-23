@@ -3,6 +3,7 @@ import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "~/scenes/ObstaclesController";
 import SnowmanController from "./SnowmanController";
+import Raycaster from 'phaser3-rex-plugins/plugins/raycaster.js'
 
 
 type CursorsKeys= Phaser.Types.Input.Keyboard.CursorKeys
@@ -15,13 +16,15 @@ export default class PlayerController {
     private obstacles: ObstaclesController
     private health = 100
     private keys
+    private raycaster:Raycaster
     private center = true
     private save={x:0,y:0}
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
     private lastSave?: Phaser.Physics.Matter.Sprite
+    
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
-        
+        this.raycaster=new Raycaster()
         this.scene = scene
         this.sprite = sprite
         this.cursors = cursors
@@ -79,13 +82,8 @@ export default class PlayerController {
             const gameObject1=bodyB.gameObject
             if(body.label==='bodyEnnemy')
             {
-                console.log(body)
+                
                 this.lastSnowmen= body.gameObject
-                if(this.sprite.y+60 < body.position.y)
-                {
-                    this.stateMachine.setState('snowmen-stomp')
-                }
-                else
                 {
                     this.stateMachine.setState('snowmen-hit')
                 }
@@ -100,8 +98,6 @@ export default class PlayerController {
             }
             if (this.obstacles.is('trigger', body))
             {
-                
-            
                 return
             }
 
@@ -165,9 +161,11 @@ export default class PlayerController {
     }
 
     private idleOnEnter() {
-
         this.sprite.play('player-idle')
-        //this.sprite.setFriction(1)
+        //this.sprite.setStatic(true)
+        
+        
+        
 
     }
     private idleOnUpdate(){
@@ -197,8 +195,7 @@ export default class PlayerController {
         }
     }
     private idleOnExit(){
-       // this.sprite.setFriction(0)
-        //this.sprite.setFrictionStatic(10)
+        this.sprite.setStatic(false)
     }
 
     private walkOnEnter() {
@@ -351,14 +348,15 @@ export default class PlayerController {
     }
     private snowmenHitOnEnter()
     {
+        
         if(this.lastSnowmen)
         {
             if (this.sprite.x < this.lastSnowmen.x)
             {
-                this.sprite.setVelocityX(-20)
+                this.sprite.setVelocityX(-50)
             } else
             {
-                this.sprite.setVelocityX(20)
+                this.sprite.setVelocityX(50)
             }
         }
         else
@@ -398,9 +396,9 @@ export default class PlayerController {
     }
     private snowmenStompOnEnter()
     {
-        this.sprite.setVelocityY(-10)
-        events.emit('snowmen-stomped',this.lastSnowmen)
-        this.stateMachine.setState('idle')
+        //this.sprite.setVelocityY(-10)
+        //events.emit('snowmen-stomped',this.lastSnowmen)
+        //this.stateMachine.setState('idle')
     }
 
     private createAnimations() {

@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\scenes\\GameOver.ts",
+            "program": "${workspaceFolder}\\src\\scenes\\PlayerController.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
-
 import Game from './scenes/Game'
 import UI from './scenes/UI'
 import GameOver from "./scenes/GameOver";
 import Start from './scenes/Start';
+import RaycasterPlugin from 'phaser3-rex-plugins/plugins/raycaster-plugin.js'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
@@ -16,8 +16,8 @@ const config: Phaser.Types.Core.GameConfig = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         min: {
-            width: 1280,
-            height: 720
+            width: 720,
+            height: 680
         },
         max: {
             width: 1280,
@@ -35,6 +35,13 @@ const config: Phaser.Types.Core.GameConfig = {
 			debug: true	
 		}
 	},
+	plugins: {
+        global: [{
+            key: 'rexRaycaster',
+            plugin: RaycasterPlugin,
+            start: true
+        },
+        ]},
 	scene: [Game,UI,GameOver]
 }
 

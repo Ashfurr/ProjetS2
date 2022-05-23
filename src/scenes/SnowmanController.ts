@@ -24,17 +24,18 @@ export default class SnowmanController
             },
         }
         const ennemybody=this.scene.matter.bodies.circle(sprite.x,sprite.y,50,{label:'bodyEnnemy'})
-        ennemyController.sensors.center = this.scene.matter.bodies.rectangle(sprite.x,sprite.y,250,250,{isSensor:true})
+        ennemyController.sensors.center = this.scene.matter.bodies.rectangle(sprite.x,sprite.y,750,750,{isSensor:true})
         const compoundenemy = this.scene.matter.body.create({parts:[ennemybody,ennemyController.sensors.center ]})
         ennemyController.sprite
             .setExistingBody(compoundenemy)
             .setFixedRotation()
 
-
-
-
+            this.scene.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
+                if(bodyA.label==='bodyEnnemy'){
+                console.log(bodyA,bodyB)};
+            });
         
-        
+
         this.stateMachine= new StateMachine(this, 'snowman')
 
         this.stateMachine.addState('idle',{

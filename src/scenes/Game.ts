@@ -10,6 +10,7 @@ import Save from './Save';
 
 
 
+
 export default class Game extends Phaser.Scene {
 	private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
@@ -46,7 +47,6 @@ export default class Game extends Phaser.Scene {
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
 		this.load.image("fx_blue", 'assets/images/blue.png')
-		this.load.image("fx_purple", 'assets/images/sparkle1.png')
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
 		this.load.image("cursor", 'assets/images/cursor.png')
 		this.load.glsl("fond", 'assets/images/marble.glsl.js')
@@ -54,7 +54,7 @@ export default class Game extends Phaser.Scene {
 	}
 
 	create() {
-		
+	
 	const cam = this.cameras.main;
 
     const gui = new GUI();
@@ -143,6 +143,8 @@ export default class Game extends Phaser.Scene {
 						.setDisplaySize(150,150)
 						.setDepth(1)
 					this.player.setCircle(80)
+					this.player.setFriction(1)
+					this.player.setFrictionStatic(10)
 					
 	
 					this.playerController = new PlayerController(this,this.player, this.cursors, this.obstacles)	
@@ -173,7 +175,7 @@ export default class Game extends Phaser.Scene {
 
 					rect.setData("type","rect")
 					this.save.push(new Save(this,rect))
-					console.log(this.save)
+					
 					
 					
 					break
