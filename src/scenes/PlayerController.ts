@@ -21,7 +21,7 @@ export default class PlayerController {
     private save={x:0,y:0}
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
     private lastSave?: Phaser.Physics.Matter.Sprite
-    
+    private music:Phaser.Sound.BaseSound
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
         this.raycaster=new Raycaster()
@@ -30,10 +30,12 @@ export default class PlayerController {
         this.cursors = cursors
         this.obstacles = obstacles
         this.createAnimations()
+        this.music=this.scene.sound.add('moskau',{loop:true})
         this.keys = this.scene.input.keyboard.addKeys('Z,Q,S,D')
         this.scene.cameras.main.startFollow(this.sprite)
 		this.scene.cameras.main.setDeadzone(200,130);
         this.sprite.setFixedRotation()
+        this.music.play()
         
         this.stateMachine = new StateMachine(this, 'player')
 
@@ -164,6 +166,7 @@ export default class PlayerController {
         this.sprite.play('player-idle')
         //this.sprite.setStatic(true)
         
+        this.music.resume()
         
         
 
@@ -196,6 +199,7 @@ export default class PlayerController {
     }
     private idleOnExit(){
         this.sprite.setStatic(false)
+        this.music.pause()
     }
 
     private walkOnEnter() {
@@ -404,8 +408,8 @@ export default class PlayerController {
     private createAnimations() {
         this.sprite.anims.create({
             key: "player-idle",
-            frameRate: 1,
-            frames: [{key: 'player', frame: 'chibiDefJ.(1).png'}],
+            frameRate: 40,
+            frames: this.sprite.anims.generateFrameNames('playeridle', {start: 1, end: 52, prefix: 'chibirussian(',suffix:').png'}),
             repeat: -1,
         })
         this.sprite.anims.create({

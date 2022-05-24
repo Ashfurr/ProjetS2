@@ -39,6 +39,7 @@ export default class Game extends Phaser.Scene {
 	preload() {
 		this.load.atlas('playerback', 'assets/kenney_player.png', 'assets/kenney_player_atlas.json')
 		this.load.atlas('player','assets/player.png','assets/player.json')
+		this.load.atlas('playeridle','assets/playeridle.png','assets/playeridle.json')
 		this.load.atlas('snowman','assets/kenney_player.png','assets/kenney_player_atlas.json')
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
 		this.load.image('mask','assets/tilesets/mask.png')
@@ -51,6 +52,7 @@ export default class Game extends Phaser.Scene {
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
 		this.load.image("cursor", 'assets/images/cursor.png')
 		this.load.glsl("fond", 'assets/images/marble.glsl.js')
+		this.load.audio('moskau','assets/sound/moskaur.mp3')
 		
 	}
 

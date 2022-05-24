@@ -3,6 +3,7 @@ import{sharedInstance as events} from "~/scenes/EventCenter";
 
 export default class UI extends Phaser.Scene
 {
+
     private starsLabel!: Phaser.GameObjects.Text
     private starsCollected=0
     private graphics!: Phaser.GameObjects.Graphics
@@ -20,6 +21,8 @@ export default class UI extends Phaser.Scene
    
     create()
     {
+
+
 
         this.fpsText = this.add.text(10, 120, 'FPS: --', {
             font: 'bold 26px Arial',
