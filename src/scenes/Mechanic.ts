@@ -1,3 +1,4 @@
+import {sharedInstance as events} from "~/scenes/EventCenter";
 import Phaser from 'phaser'
 import Game from './Game'
 
@@ -42,7 +43,7 @@ private trace = true
             }, this);
 
             this.scene.input.on('pointermove',  (pointer)=> {
-                if (pointer.isDown)
+                if (pointer.isDown && this.trace===true)
                 {
                     const x =  pointer.worldX;
                     const y =  pointer.worldY;
@@ -70,8 +71,9 @@ private trace = true
 
             }, this);
             this.scene.input.on('pointerup',  (pointer)=> {
-                if(this.trace===true && this.platform.length>1)
+                if(this.trace===true && this.platform.length>0)
                 {
+                    events.emit('active')
                     console.log("desactiver")
                     this.trace=false
                     this.scene.time.delayedCall(3000, () => 
@@ -112,8 +114,10 @@ private trace = true
         })
         this.scene.time.delayedCall(platform.length*100, ()=> 
         {
-            this.trace=true  
-            console.log(this.trace)
+            events.emit('disactive')
+            this.trace=true
+              
+            
         })
     }
     private eraseDisplayPlatform(platform: Phaser.GameObjects.Image[])
@@ -131,9 +135,6 @@ private trace = true
             },
                 repeat: platform.length ,
         })
-        if(time.hasDispatched)
-        {
-            this.trace=true
-        }
+       
     }
 }

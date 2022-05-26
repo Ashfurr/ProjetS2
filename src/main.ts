@@ -24,15 +24,26 @@ const config: Phaser.Types.Core.GameConfig = {
             height: 720,
         }
 	},
-	fps:{
+	/*fps:{
 		min:120,
 		target:140,
 		forceSetTimeOut:true,
-	},
+	},*/
 	physics: {
 		default: 'matter',
 		matter: {
-			debug: true	
+			gravity:{
+				y:0.9
+			},
+			debug: {
+				showVelocity: true,
+				showBody: true,
+                showStaticBody: true,
+                showInternalEdges: true,
+				showSensors: true,
+                sensorFillColor: 0x0d177b,
+                sensorLineColor: 0x1327e4,
+			}
 		}
 	},
 	plugins: {

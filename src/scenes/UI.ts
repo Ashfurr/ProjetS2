@@ -9,6 +9,7 @@ export default class UI extends Phaser.Scene
     private graphics!: Phaser.GameObjects.Graphics
     private lastHealth=100
     private fpsText!: Phaser.GameObjects.Text
+    private tween!:Phaser.Tweens.Tween
     constructor() {
         super({
             key: "ui"
@@ -21,6 +22,39 @@ export default class UI extends Phaser.Scene
    
     create()
     {
+        
+        events.on("active",()=>{
+        const startColor = Phaser.Display.Color.ValueToColor(0xffffff)
+        const endColor = Phaser.Display.Color.ValueToColor(0x0000ff)
+        this.tween=this.tweens.addCounter({
+            from: 0,
+            to: 100,
+            duration: 200,
+            repeat: -1,
+            ease: Phaser.Math.Easing.Sine.InOut,
+            yoyo:true,
+            onUpdate: tween => {
+                const value = tween.getValue()
+                const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
+                    startColor,
+                    endColor,
+                    100,
+                    value
+                )
+                const color = Phaser.Display.Color.GetColor(
+                    colorObject.r,
+                    colorObject.g,
+                    colorObject.b
+                )
+                cursor.setTint(color)
+            }
+        })
+        })
+        events.on("disactive",()=>{
+            this.tween.stop()
+            cursor.setTint(undefined)
+            cursor.setTexture('cursor')
+        })
 
 
 
@@ -28,7 +62,7 @@ export default class UI extends Phaser.Scene
             font: 'bold 26px Arial',
             color: '#ffffff'
         });
-        const cursor=this.add.image(0,0,'cursor').setDisplaySize(50,50)
+        const cursor=this.add.image(0,0,'cursor').setScale(0.2)
         this.graphics = this.add.graphics()
         this.setHealthBar(100)
 
@@ -42,8 +76,11 @@ export default class UI extends Phaser.Scene
             events.off('star-collected',this.handleStarCollected,this )
         })
         this.input.on('pointermove',  (pointer)=> {
-            cursor.setPosition(pointer.worldX,pointer.worldY)
+            cursor.setPosition(pointer.worldX,pointer.worldY-10)
         });
+        this.input.on('pointerdown',  (pointer)=> {
+            cursor.setTexture('cursorA')
+        }); 
     }
     
     private setHealthBar(value: number)

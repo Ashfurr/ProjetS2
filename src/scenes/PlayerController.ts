@@ -3,7 +3,7 @@ import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "~/scenes/ObstaclesController";
 import SnowmanController from "./SnowmanController";
-import Raycaster from 'phaser3-rex-plugins/plugins/raycaster.js'
+
 
 
 type CursorsKeys= Phaser.Types.Input.Keyboard.CursorKeys
@@ -16,7 +16,6 @@ export default class PlayerController {
     private obstacles: ObstaclesController
     private health = 100
     private keys
-    private raycaster:Raycaster
     private center = true
     private save={x:0,y:0}
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
@@ -24,7 +23,6 @@ export default class PlayerController {
     private music:Phaser.Sound.BaseSound
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
-        this.raycaster=new Raycaster()
         this.scene = scene
         this.sprite = sprite
         this.cursors = cursors
@@ -35,7 +33,7 @@ export default class PlayerController {
         this.scene.cameras.main.startFollow(this.sprite)
 		this.scene.cameras.main.setDeadzone(200,130);
         this.sprite.setFixedRotation()
-        this.music.play()
+        //this.music.play()
         
         this.stateMachine = new StateMachine(this, 'player')
 
@@ -139,7 +137,7 @@ export default class PlayerController {
             }
         })
     }
-   
+    
 
     update(dt: number) {
         this.stateMachine.update(dt)
@@ -164,7 +162,6 @@ export default class PlayerController {
 
     private idleOnEnter() {
         this.sprite.play('player-idle')
-        //this.sprite.setStatic(true)
         
         this.music.resume()
         

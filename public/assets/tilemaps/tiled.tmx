@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="22" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="61">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="120" height="22" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="62">
  <editorsettings>
   <export target="tiled.json" format="json"/>
  </editorsettings>
@@ -93,9 +93,7 @@
   <object id="11" name="star" x="2912" y="496" width="64" height="64"/>
   <object id="13" name="spikes" x="752" y="1344" width="640" height="38"/>
   <object id="16" name="health" x="7360" y="384" width="64" height="64"/>
-  <object id="18" name="snowman" x="3376" y="784" width="64" height="64"/>
-  <object id="20" name="snowman" x="2240" y="784" width="64" height="64"/>
-  <object id="21" name="snowman" x="6896" y="976" width="64" height="64"/>
+  <object id="20" name="snowman" x="1024" y="848" width="64" height="64"/>
   <object id="40" x="0" y="1408">
    <point/>
   </object>
@@ -104,13 +102,16 @@
  </objectgroup>
  <objectgroup color="#aa0000" id="4" name="collider">
   <object id="42" x="-16" y="976">
-   <polygon points="0,0 160,32 288,16 416,16 480,0 608,48 640,112 704,240 736,400 688,432 0,432"/>
+   <polygon points="0,0 160,32 288,16 416,16 480,0 608,48 688,128 672,208 688,432 0,432"/>
   </object>
   <object id="43" x="1408" y="1408">
-   <polygon points="0,0 64,-400 240,-416 384,-384 608,-448 928,-432 1216,-416 1296,-464 1504,-704 1632,-704 1632,-432 1936,-384 2096,-416 2320,-416 2368,-432 2384,-1024 2688,-1024 2752,-912 2928,-800 3056,-656 3216,-480 3360,-352 3488,0"/>
+   <polygon points="80,0 48,-400 240,-416 384,-384 608,-448 928,-432 1216,-416 1296,-464 1504,-704 1632,-704 1600,-432 1936,-384 2096,-416 2320,-416 2400,-464 2384,-1024 2688,-1024 2752,-912 2928,-800 3056,-656 3216,-480 3360,-352 3488,0"/>
   </object>
   <object id="44" x="5856" y="1408">
    <polygon points="0,0 240,-80 384,-288 528,-256 672,-288 816,-240 1264,-240 1360,-352 1344,-816 1456,-864 1808,-800 1808,-16"/>
+  </object>
+  <object id="61" x="752" y="656">
+   <polygon points="0,0 64,0 64,288 544,288 544,-32 624,-32 624,336 -16,352"/>
   </object>
  </objectgroup>
 </map>

@@ -3,6 +3,7 @@ import * as MatterJS from 'matter-js';
 import StateMachine from "~/statemachine/StateMachine";
 import {sharedInstance as events} from "~/scenes/EventCenter";
 import ObstaclesController from "./ObstaclesController";
+import Projectil from "./projectile";
 export default class SnowmanController
 {
     
@@ -11,13 +12,37 @@ export default class SnowmanController
     private stateMachine: StateMachine
     private obstacles!: ObstaclesController
     private moveTime = 0
+    private attackspeed=0
     private cible={x:0,y:0}
-
+    private projectil!:Phaser.Physics.Matter.Sprite
+    private timerFire?=Phaser.Time.TimerEvent
+    private alive=true
+    private timerAttackSpeed=Phaser.Time.TimerEvent
+    private angle!:number
+   
     constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite) {
-        
         this.scene = scene
         this.sprite= sprite
         this.createAnimations()
+        const circlezone= new Phaser.Geom.Circle(0,0,50)
+        const fxSave = this.scene.add.particles('ennemy')
+        const emmiterproj = fxSave.createEmitter(
+            {
+                //tint:[0x18022F,0x0C022F,0x030662],
+                speed: {min: 150, max: 300},
+                angle:{start:0,end:360,steps:15},
+                scale: {start: 0.1, end: 0.2},
+                lifespan: {min:50,max:450},
+                blendMode: 'SCREEN',
+                frequency: 1,
+                quantity:2,
+                rotate:{start:360,end:0},
+                alpha: {start:1,end:0},
+                emitZone:{type: 'random',source:circlezone}
+                
+
+            });
+        emmiterproj.startFollow(sprite)
         const ennemyController={
             sprite,
             sensors: {
@@ -25,15 +50,12 @@ export default class SnowmanController
             },
         }
         const ennemybody=this.scene.matter.bodies.circle(sprite.x,sprite.y,50,{label:'bodyEnnemy'})
-        ennemyController.sensors.center = this.scene.matter.bodies.rectangle(sprite.x,sprite.y,750,750,{isSensor:true})
+        ennemyController.sensors.center = this.scene.matter.bodies.circle(sprite.x,sprite.y,450,{isSensor:true})
         const compoundenemy = this.scene.matter.body.create({parts:[ennemybody,ennemyController.sensors.center ]})
-        ennemyController.sprite
-            .setExistingBody(compoundenemy)
-            .setFixedRotation()
-            
+        ennemyController.sprite.setExistingBody(compoundenemy)
+        ennemyController.sprite.setFixedRotation()
+        //ennemyController.sprite.setStatic(true)
 
-            
-        
 
         this.stateMachine= new StateMachine(this, 'snowman')
 
@@ -50,20 +72,35 @@ export default class SnowmanController
             })
             .addState('fire',{
                 onEnter: this.fireOnEnter,
+                onUpdate:this.fireOnUpdate,
+                onExit:this.fireOnExit
             
             })
             .addState('dead')
             .setState('idle')
         events.on('snowmen-stomped', this.handleStomped, this)
         this.scene.matter.world.on('collisionstart',(event, bodyA, bodyB)=> {
-            if(bodyA.label==='player'||bodyB===ennemyController.sensors.center){
+            if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center){
                 this.stateMachine.setState('fire')
-                bodyA.x=this.cible.x
-                bodyA.y=this.cible.y
+                this.cible.x=bodyA.position.x
+                this.cible.y=bodyA.position.y
+                
             }
+            
         });
+        this.scene.matter.world.on('collisionend',(event, bodyA, bodyB)=> {
+            if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center && this.alive===true){
+                this.stateMachine.setState('idle')
+  
+            }
+        })
+           
     }
-    
+    tracking(x:number,y:number){
+        this.cible.x=x 
+        this.cible.y=y
+        this.angle=(Phaser.Math.Angle.Between(this.sprite.x,this.sprite.y,this.cible.x,this.cible.y))
+    }
     destroy()
     {
         events.off('snowmen-stomped', this.handleStomped,this)
@@ -100,8 +137,6 @@ export default class SnowmanController
     private moveRightOnEnter()
     {
         this.moveTime= 0
-
-
     }
     private moveRightOnUpdate(dt: number)
     {
@@ -114,11 +149,23 @@ export default class SnowmanController
         }
     }
     private fireOnEnter(){
-        this.scene.matter.add.sprite(this.sprite.x,this.sprite.y,'projectil')
-        //this.scene.physics.moveToObject()
+        this.attackspeed=0
+        events.emit('targuet') 
+    }
+private fireOnUpdate(dt:number){
+         
+        this.attackspeed+=dt
+        if(this.attackspeed>2000){
+            new Projectil(this.scene,this.sprite.x,this.sprite.y,this.angle)
+            this.attackspeed=0
+        }
+    }
+    private fireOnExit(){
+        events.emit('targuet') 
     }
     private handleStomped(snowmen: Phaser.Physics.Matter.Sprite)
     {
+        this.alive=false
         if(this.sprite!== snowmen)
         {
             return
@@ -132,7 +179,7 @@ export default class SnowmanController
             y: this.sprite.y+(this.sprite.displayHeight*0.5),
             duration: 200,
             onComplete:()=> {
-                this.sprite.destroy()
+                this.sprite.active=false
             }
         })
 
@@ -154,8 +201,8 @@ export default class SnowmanController
         })
     }
     update(dt: number)
-    {
-        //this.stateMachine.update(dt)
-        
+    {   
+        if(this.sprite.active===true){
+        this.stateMachine.update(dt)  } 
     }
 }

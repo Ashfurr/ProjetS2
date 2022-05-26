@@ -22,6 +22,7 @@ export default class Game extends Phaser.Scene {
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
 	private neon!: Phaser.Physics.Matter.Sprite
+	private switch=false
 
 	constructor() {
 		super('game')
@@ -41,18 +42,26 @@ export default class Game extends Phaser.Scene {
 		this.load.atlas('player','assets/player.png','assets/player.json')
 		this.load.atlas('playeridle','assets/playeridle.png','assets/playeridle.json')
 		this.load.atlas('snowman','assets/kenney_player.png','assets/kenney_player_atlas.json')
+
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
 		this.load.image('mask','assets/tilesets/mask.png')
 		this.load.image('save','assets/images/autre tileset/Block_Blue.png')
-		this.load.image('projectil','assets/images/autre tileset/Coin_Front.png')
+		this.load.image("partproj", 'assets/images/partproj.png')
 		this.load.image('particleSave','assets/images/particlesSave.png')
 		this.load.image("star", 'assets/images/Save.png')
 		this.load.image("health", 'assets/images/Heal.png')
 		this.load.image("fx_blue", 'assets/images/blue.png')
-		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
+		this.load.image('projectil','assets/images/projectil.png')
+		this.load.image('ennemy','assets/images/ennemie.png')
+		
+		this.load.image("cursorA", 'assets/images/cursorA.png')
 		this.load.image("cursor", 'assets/images/cursor.png')
+
 		this.load.glsl("fond", 'assets/images/marble.glsl.js')
+
 		this.load.audio('moskau','assets/sound/moskaur.mp3')
+
+		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
 		
 	}
 
@@ -63,8 +72,11 @@ export default class Game extends Phaser.Scene {
     const gui = new GUI();
 
     const p1 = gui.addFolder('Pointer');
-    p1.add(this.input, 'x').listen();
-    p1.add(this.input, 'y').listen();
+    p1.add(this.input.mousePointer, 'x').listen();
+    p1.add(this.input.mousePointer, 'y').listen();
+	p1.add(this.input.mousePointer, 'worldX').listen();
+    p1.add(this.input.mousePointer, 'worldY').listen();
+	
     
 
     const help = {
@@ -142,9 +154,10 @@ export default class Game extends Phaser.Scene {
 			{
 				case 'playerspawn':
 				{
-					this.player = this.matter.add.sprite(x,y, 'player',undefined).setPipeline('Light2D')
+					this.player = this.matter.add.sprite(x,y, 'player',undefined)
 						.setDisplaySize(150,150)
 						.setDepth(1)
+						
 					this.player.setCircle(80,{label:'player'})
 					this.player.setFriction(1)
 					this.player.setFrictionStatic(10)
@@ -155,10 +168,11 @@ export default class Game extends Phaser.Scene {
 				}
 				case "snowman":
 				{	
-					const snowman = this.matter.add.sprite(x, y, 'snowman')
+					const snowman = this.matter.add.sprite(x, y, 'snowman',undefined,{label:'ennemy'})
 						.setCircle(40)
 						// @ts-ignore
 						.setFixedRotation()
+						.setVisible(false)
 						
 					
 					
@@ -213,6 +227,8 @@ export default class Game extends Phaser.Scene {
 				}
 			}
 		})
+		events.on("targuet",this.handleswitch,this)
+
 		const p2 = gui.addFolder('Player');
 		p2.add(this.player, 'x').listen();
 		p2.add(this.player, 'y').listen();
@@ -228,7 +244,9 @@ export default class Game extends Phaser.Scene {
 		
 		
 	}
-	
+	handleswitch(){
+		this.switch=!this.switch
+	}
 	destroy()
 		{
 			this.scene.stop('ui')
@@ -237,10 +255,14 @@ export default class Game extends Phaser.Scene {
 	
 	update(t: number, dt: number)
 		{
-			
 			this.playerController?.update(dt)
 			this.snowmen.forEach(snowman => snowman.update(dt))
+			if(this.switch){
+				this.snowmen.forEach(snowman => snowman.tracking(this.player.x,this.player.y))
+				console.log('oui')
+			}
 		}
+		
 	}
 	
 
