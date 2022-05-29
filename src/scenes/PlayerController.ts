@@ -80,8 +80,8 @@ export default class PlayerController {
         this.sprite.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyB as MatterJS.BodyType
             const bodyB = data.bodyA as MatterJS.BodyType
-            const gameObject = body.gameObject
-            const gameObject1=bodyB.gameObject
+            const gameObject = bodyB.gameObject
+            const gameObject1=body.gameObject
             
             //const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,normal))
            
@@ -97,14 +97,14 @@ export default class PlayerController {
                 }
                 return
             }
-        
-            if (this.obstacles.is('spikes', body))
+            
+            if (this.obstacles.is('spikes', bodyB))
             {
                 this.stateMachine.setState('spike-hit')
             
                 return
             }
-            if (this.obstacles.is('trigger', body))
+            if (this.obstacles.is('trigger', bodyB))
             {
                 return
             }
@@ -112,10 +112,9 @@ export default class PlayerController {
           
             if(body.label==='floor'){
                 const supports=data.collision.supports
-                console.log(bodyB)
+                
                 for(let i=0;i<supports.length;i++){
                     const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(bodyB.position,supports[i]))
-                    console.log(anglu)
                     if(anglu>20 && anglu<160){
                         this.blocked=false
                     }
@@ -135,7 +134,6 @@ export default class PlayerController {
                 const supports=data.collision.supports
                 for(let i=0;i<supports.length;i++){
                     const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,supports[i]))
-                    console.log(supports[i])
                     if(anglu>20 && anglu<160){
                         this.blocked=false
                         this.stateMachine.setState('idle')
@@ -144,10 +142,12 @@ export default class PlayerController {
                         this.blocked=true
                     }
                 }
+                return
             }
 
             const sprite = gameObject as Phaser.Physics.Matter.Sprite
             const type = sprite.getData('type')
+            console.log(type)
             switch(type)
             {
                 case "star":

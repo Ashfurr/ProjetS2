@@ -165,7 +165,6 @@ tweenlight2(light){
                 bg.setTint(color)
             },
             onComplete: tween => {
-                
                 this.scene.start('game')
             }
         })

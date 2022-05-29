@@ -111,8 +111,8 @@ export default class Game extends Phaser.Scene {
 	p1.open();
 		const map = this.make.tilemap({key: 'tilemap'})
 		const tileset = map.addTilesetImage('triangle-imagefinal', 'tiles',64,64)
-		this.add.image(-500,-250,"bg").setOrigin(0,).setScrollFactor(0.01,0).setBlendMode("SCREEN").setScale(1.3)
-
+		const bg=this.add.image(-500,-250 ,"bg").setOrigin(0,0).setScrollFactor(0.01,0).setBlendMode("ADD").setScale(0.8).setPipeline('Light2D').setAlpha(0.7)
+		
 		const shader=this.add.shader('fond',0,0,7680,1400).setOrigin(0,0).setDepth(1)
 		const mask=this.add.image(0,0,"mask").setOrigin(0,0)
 		const ground = map.createLayer('ground', tileset).setPipeline("Light2D").setDepth(2)
@@ -121,9 +121,9 @@ export default class Game extends Phaser.Scene {
 		
 		//const groundbg = map.createLayer('groundbg', tileset).setDepth(0)
 		
-		const light = this.lights.addLight(900, 900, 200).setIntensity(3).setColor(0xB0E9EC);
+		const light = this.lights.addLight(900, 900, 100,0xB0E9EC,1)
 
-    this.lights.enable().setAmbientColor(0x666565);
+    this.lights.enable().setAmbientColor(0xA2A2A1)
 
     this.input.on('pointermove', function (pointer) {
 
@@ -158,13 +158,21 @@ export default class Game extends Phaser.Scene {
 		const objectsLayer = map.getObjectLayer('objects')
 		objectsLayer.objects.forEach(objData=>{
 			const{ x = 0 , y = 0 , name, width=0,height=0 } = objData
+			
 			switch(name)
 			{
 				case 'light':
 					{
-						this.lights.addLight(x,y,200,undefined,3)
+						const color=Phaser.Display.Color.HexStringToColor(objData.text.color).color
+						console.log(color)
+						this.lights.addLight(x,y,200,color,3)
 						break
 					}
+				case 'light-bg':
+				{
+					this.lights.addPointLight(x,y,0xffffff,10000,0.1).setBlendMode("MULTIPLY")
+					break
+				}
 				case 'platform-A':
 				{
 					const platform=this.matter.add.sprite(x,y,"platform",0x7A7A7A,{ignoreGravity:true}).setDisplaySize(250,50)
