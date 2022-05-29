@@ -21,8 +21,8 @@ private trace = true
         this.platformDisplay=[]
         this.scene.input.mouse.disableContextMenu();
         const nbplatform=15
-        const sides = 16;
-        const size = 14;
+        const sides = 6;
+        const size = 32;
         const distance = size * 2;
         const stiffness = 0.3;
         const lastPosition = new Phaser.Math.Vector2();
@@ -60,12 +60,12 @@ private trace = true
                         
 
                         this.constraint=this.scene.matter.add.constraint(this.previous, this.current, distance, stiffness);
-                        console.log()
+                        
 
                         this.previous = this.current;
                         this.platform.push(this.previous)
                         this.platformDisplay.push(image)
-                        console.log(this.platform)
+                        
                     }
                 }
 

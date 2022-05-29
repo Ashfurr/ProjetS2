@@ -21,6 +21,7 @@ export default class PlayerController {
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
     private lastSave?: Phaser.Physics.Matter.Sprite
     private music:Phaser.Sound.BaseSound
+    private blocked=false
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
         this.scene = scene
@@ -30,8 +31,8 @@ export default class PlayerController {
         this.createAnimations()
         this.music=this.scene.sound.add('moskau',{loop:true})
         this.keys = this.scene.input.keyboard.addKeys('Z,Q,S,D')
-        this.scene.cameras.main.startFollow(this.sprite)
-		this.scene.cameras.main.setDeadzone(200,130);
+		
+
         this.sprite.setFixedRotation()
         //this.music.play()
         
@@ -56,6 +57,7 @@ export default class PlayerController {
             .addState('descent',{
                 onEnter: this.descentOnEnter,
                 onUpdate: this.descentOnUpdate,
+                onExit:this.descentOnExit
             })
             .addState('spike-hit',{
                 onEnter: this.spikeHitOnEnter
@@ -74,12 +76,18 @@ export default class PlayerController {
                 
             })
             .setState('idle')
-
+        
         this.sprite.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyB as MatterJS.BodyType
             const bodyB = data.bodyA as MatterJS.BodyType
             const gameObject = body.gameObject
             const gameObject1=bodyB.gameObject
+            
+            //const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,normal))
+           
+            
+            //console.log(normal.x.toFixed(3),normal.y.toFixed(3))
+            
             if(body.label==='bodyEnnemy')
             {
                 
@@ -102,14 +110,40 @@ export default class PlayerController {
             }
 
           
-            // @ts-ignore
-            if(bodyB.name==='floor'||body.label==='floor')
-            { 
-                if (this.stateMachine.isCurrentState('descent'))
+            if(body.label==='floor'){
+                const supports=data.collision.supports
+                console.log(bodyB)
+                for(let i=0;i<supports.length;i++){
+                    const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(bodyB.position,supports[i]))
+                    console.log(anglu)
+                    if(anglu>20 && anglu<160){
+                        this.blocked=false
+                    }
+                    else{
+                        this.blocked=true
+                    }
+                }
+                 if (this.stateMachine.isCurrentState('descent'))
                 {
+                    
                     this.stateMachine.setState('idle')
                 }
                 return
+            }
+            if(bodyB.label==='ground')
+            { 
+                const supports=data.collision.supports
+                for(let i=0;i<supports.length;i++){
+                    const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,supports[i]))
+                    console.log(supports[i])
+                    if(anglu>20 && anglu<160){
+                        this.blocked=false
+                        this.stateMachine.setState('idle')
+                    }
+                    else{
+                        this.blocked=true
+                    }
+                }
             }
 
             const sprite = gameObject as Phaser.Physics.Matter.Sprite
@@ -171,7 +205,8 @@ export default class PlayerController {
     private idleOnUpdate(){
 
         if (this.keys.Q.isDown || this.keys.D.isDown){
-            this.stateMachine.setState('walk')
+            if(this.blocked===false){
+            this.stateMachine.setState('walk')}
         }
         if(this.keys.Z.isDown){
             if(this.scene.cameras.main.zoom>0.4)
@@ -196,6 +231,7 @@ export default class PlayerController {
     }
     private idleOnExit(){
         this.sprite.setStatic(false)
+        
         this.music.pause()
     }
 
@@ -204,7 +240,7 @@ export default class PlayerController {
     }
     private walkOnUpdate() {
         const speed = 4
-        if (this.keys.Q.isDown) {
+        if (this.keys.Q.isDown ) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
         } else if (this.keys.D.isDown) {
@@ -220,7 +256,8 @@ export default class PlayerController {
         }
     }
     private walkOnExit(){
-        this.sprite.stop()
+        
+        this.blocked=false
     }
     private jumpOnEnter()
     {
@@ -249,19 +286,19 @@ export default class PlayerController {
     private descentOnUpdate(){
         const speed = 5
 
-        if (this.keys.Q.isDown) {
+        if (this.keys.Q.isDown && this.blocked===false) {
             this.sprite.setVelocityX(-speed)
             this.sprite.flipX = true
-        } else if (this.keys.D.isDown) {
+        } else if (this.keys.D.isDown && this.blocked===false) {
             this.sprite.setVelocityX(speed)
             this.sprite.flipX = false
         }
-
-        if(this.sprite.body.velocity.y<0.2){
-            this.stateMachine.setState('idle')
-        }
-
     }
+    private descentOnExit(){
+        this.blocked===false
+    }
+
+    
     private deadOnEnter()
     {
         this.health=100
@@ -295,6 +332,7 @@ export default class PlayerController {
                         light.setPosition(this.sprite.x,this.sprite.y)
                     },
                     onComplete:()=>{
+                        this.blocked=false
                         this.sprite.setAwake()
                         this.sprite.setSensor(false)
                         this.sprite.setVisible(true)

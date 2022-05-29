@@ -103,7 +103,7 @@ export default class UI extends Phaser.Scene
             from: this.lastHealth,
             to : value,
             duration:200,
-            ease : Phaser.Math.Easing.Sine.InOut,
+            ease : 'Power1',
             onUpdate: tween => {
                 const value = tween.getValue()
                 this.setHealthBar(value)

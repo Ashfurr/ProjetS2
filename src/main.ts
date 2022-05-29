@@ -7,21 +7,19 @@ import RaycasterPlugin from 'phaser3-rex-plugins/plugins/raycaster-plugin.js'
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.WEBGL,
-	
-	width: 1920,
-	height: 1080,
 	antialias:true,
 	powerPreference: "high-performance",
 	scale: {
+		width: 1920,
+		height: 1080,
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
         min: {
             width: 720,
             height: 680
         },
         max: {
-            width: 1280,
-            height: 720,
+            width: 1920,
+            height: 1080,
         }
 	},
 	/*fps:{
@@ -32,9 +30,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	physics: {
 		default: 'matter',
 		matter: {
-			gravity:{
-				y:0.9
-			},
+			//gravity:{y:0.9},
 			debug: {
 				showVelocity: true,
 				showBody: true,
@@ -43,6 +39,9 @@ const config: Phaser.Types.Core.GameConfig = {
 				showSensors: true,
                 sensorFillColor: 0x0d177b,
                 sensorLineColor: 0x1327e4,
+				showCollisions:true,
+				showConvexHulls:true,
+				showAxes:true
 			}
 		}
 	},

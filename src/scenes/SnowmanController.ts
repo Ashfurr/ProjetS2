@@ -151,6 +151,7 @@ export default class SnowmanController
     private fireOnEnter(){
         this.attackspeed=0
         events.emit('targuet') 
+        this.sprite.setStatic(true)
     }
 private fireOnUpdate(dt:number){
          
@@ -162,6 +163,7 @@ private fireOnUpdate(dt:number){
     }
     private fireOnExit(){
         events.emit('targuet') 
+        this.sprite.setStatic(false)
     }
     private handleStomped(snowmen: Phaser.Physics.Matter.Sprite)
     {

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import PlayerController from "~/scenes/PlayerController";
+import PlatformController from './PlatformController';
 import ObstaclesController from "~/scenes/ObstaclesController";
 import SnowmanController from "~/scenes/SnowmanController";
 import {sharedInstance as events} from "~/scenes/EventCenter";
@@ -17,6 +18,7 @@ export default class Game extends Phaser.Scene {
 	private player!: Phaser.Physics.Matter.Sprite
 	private playerController?: PlayerController
 	private SnowmanController?: SnowmanController
+	private platformController?: PlatformController
 	public save: Save[]=[]
 	private obstacles!: ObstaclesController
 	private snowmen: SnowmanController[]= []
@@ -44,7 +46,6 @@ export default class Game extends Phaser.Scene {
 		this.load.atlas('snowman','assets/kenney_player.png','assets/kenney_player_atlas.json')
 
 		this.load.image("tiles", ['assets/tilesets/triangle-imagefinal.png','assets/tilesets/triangle-imagefinal_n.png'])
-		this.load.image('mask','assets/tilesets/mask.png')
 		this.load.image('save','assets/images/autre tileset/Block_Blue.png')
 		this.load.image("partproj", 'assets/images/partproj.png')
 		this.load.image('particleSave','assets/images/particlesSave.png')
@@ -53,12 +54,15 @@ export default class Game extends Phaser.Scene {
 		this.load.image("fx_blue", 'assets/images/blue.png')
 		this.load.image('projectil','assets/images/projectil.png')
 		this.load.image('ennemy','assets/images/ennemie.png')
+		this.load.image('platform','assets/images/autre tileset/Goop_Tile_Half_Round-01.png')
 		
 		this.load.image("cursorA", 'assets/images/cursorA.png')
 		this.load.image("cursor", 'assets/images/cursor.png')
 
-		this.load.glsl("fond", 'assets/images/marble.glsl.js')
+		this.load.image("bg",'assets/images/bg.png')
+		this.load.image('mask','assets/tilesets/triangle-imagefinalmask.png')
 
+		this.load.glsl("fond", 'assets/images/marble.glsl.js')
 		this.load.audio('moskau','assets/sound/moskaur.mp3')
 
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
@@ -105,17 +109,21 @@ export default class Game extends Phaser.Scene {
 		this.mechanic= new Mechanic(this)
 	p1.add(this.mechanic,'trace').listen()
 	p1.open();
-		
 		const map = this.make.tilemap({key: 'tilemap'})
 		const tileset = map.addTilesetImage('triangle-imagefinal', 'tiles',64,64)
+		this.add.image(-500,-250,"bg").setOrigin(0,).setScrollFactor(0.01,0).setBlendMode("SCREEN").setScale(1.3)
 
+		const shader=this.add.shader('fond',0,0,7680,1400).setOrigin(0,0).setDepth(1)
+		const mask=this.add.image(0,0,"mask").setOrigin(0,0)
 		const ground = map.createLayer('ground', tileset).setPipeline("Light2D").setDepth(2)
-		const mask=this.add.image(0,0,'mask').setOrigin(0,0)
-		const groundbg = map.createLayer('groundbg', tileset).setDepth(0)
+		shader.mask= new Phaser.Display.Masks.BitmapMask(this,mask)
 		
-		const light = this.lights.addLight(900, 900, 200).setIntensity(5).setColor(0xB0E9EC);
+		
+		//const groundbg = map.createLayer('groundbg', tileset).setDepth(0)
+		
+		const light = this.lights.addLight(900, 900, 200).setIntensity(3).setColor(0xB0E9EC);
 
-    this.lights.enable().setAmbientColor(0xCAC5C4);
+    this.lights.enable().setAmbientColor(0x666565);
 
     this.input.on('pointermove', function (pointer) {
 
@@ -140,7 +148,7 @@ export default class Game extends Phaser.Scene {
 			arrayY.push(polygon[i].y)
 		}
 		const collider = this.add.polygon(x,y,polygon).setOrigin(0,0).setPipeline('Light2D')
-		const colliderB=this.matter.add.gameObject(collider,{shape:{type: "fromVerts",verts:polygon, flagInternal:true},isStatic:true,name:name,friction:1})
+		const colliderB=this.matter.add.gameObject(collider,{shape:{type: "fromVerts",verts:polygon, flagInternal:true},isStatic:true ,friction:1,label:'ground'})
 
 		const rect =this.add.rectangle(x+collider.getBounds().width*0.5,y+collider.getBounds().height*0.5,collider.getBounds().width,collider.getBounds().height)
 		Phaser.Display.Align.In.Center(collider, rect)
@@ -152,6 +160,20 @@ export default class Game extends Phaser.Scene {
 			const{ x = 0 , y = 0 , name, width=0,height=0 } = objData
 			switch(name)
 			{
+				case 'light':
+					{
+						this.lights.addLight(x,y,200,undefined,3)
+						break
+					}
+				case 'platform-A':
+				{
+					const platform=this.matter.add.sprite(x,y,"platform",0x7A7A7A,{ignoreGravity:true}).setDisplaySize(250,50)
+					platform.setFixedRotation()
+					
+					
+					this.platformController= new PlatformController(this,platform,1300,'platform-A',10)
+					break
+				}
 				case 'playerspawn':
 				{
 					this.player = this.matter.add.sprite(x,y, 'player',undefined)
@@ -237,10 +259,14 @@ export default class Game extends Phaser.Scene {
 		p3.add(this.player.body.velocity, 'y').listen();
 		p2.open();
 		p3.open()
+		const camera=this.cameras.main
+        
+        camera.startFollow(this.player)
+        camera.setBounds(0,0,7780,1427)
+		//camera.setZoom(0.7)
+		camera.setLerp(0.05,0.05)
 		
-		const shader=this.add.shader('fond',0,0,7680,1400).setOrigin(0,0).setDepth(-1)
-		const shaderMask=shader.createBitmapMask()
-		mask.setMask(shaderMask)
+		
 		
 		
 	}
@@ -259,7 +285,7 @@ export default class Game extends Phaser.Scene {
 			this.snowmen.forEach(snowman => snowman.update(dt))
 			if(this.switch){
 				this.snowmen.forEach(snowman => snowman.tracking(this.player.x,this.player.y))
-				console.log('oui')
+				
 			}
 		}
 		
