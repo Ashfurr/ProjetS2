@@ -22,11 +22,11 @@ const config: Phaser.Types.Core.GameConfig = {
             height: 1080,
         }
 	},
-	/*fps:{
+	fps:{
 		min:120,
 		target:140,
 		forceSetTimeOut:true,
-	},*/
+	},
 	physics: {
 		default: 'matter',
 		matter: {

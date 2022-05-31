@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "mon projet de platformer",
   "dependencies": {
+    "cssnano": "^5.1.10",
     "latest": "^0.2.0",
     "matter-js": "^0.18.0",
     "phaser": "^3.60.0-beta.6",

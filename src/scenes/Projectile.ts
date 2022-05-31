@@ -28,6 +28,7 @@ export default class Projectil
         const circlezone= new Phaser.Geom.Circle(0,0,50)
         const rectContain=this.scene.add.group()
         rectContain.add(this.projectil)
+        console.log(rectContain)
         let starsFxContainer=this.scene.add.container();
         rectContain.children.iterate((projectil)=>{
         const fxSave = this.scene.add.particles('partproj')
@@ -65,7 +66,7 @@ export default class Projectil
         })
         this.scene.time.delayedCall(50,()=>{
             canBedestroy=true
-            this.projectil.setSensor(true)
+            this.projectil.setSensor(false)
         })
         this.projectil.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyA 
