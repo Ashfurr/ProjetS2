@@ -185,6 +185,7 @@ private fireOnUpdate(dt:number){
             duration: 200,
             onComplete:()=> {
                 this.sprite.active=false
+                events.emit('mech-augment')
             }
         })
 

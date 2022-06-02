@@ -88,13 +88,17 @@ export default class PlayerController {
             
             //console.log(normal.x.toFixed(3),normal.y.toFixed(3))
             
-            if(body.label==='bodyEnnemy')
+            if(body.label==='bodyEnnemy' && this.sprite.isSensor()===false)
             {
                 
                 this.lastSnowmen= body.gameObject
                 {
                     this.stateMachine.setState('snowmen-hit')
                 }
+                return
+            }
+            if(body.label==='projectil' && this.sprite.isSensor()===false){
+                this.stateMachine.setState('snowmen-hit')
                 return
             }
             
@@ -211,6 +215,7 @@ export default class PlayerController {
         this.sprite.play('player-idle')
         
         this.music.resume()
+        console.log(this.health)
         
         
 
@@ -409,21 +414,21 @@ export default class PlayerController {
         {
             if (this.sprite.x < this.lastSnowmen.x)
             {
-                this.sprite.setVelocityX(-50)
+                this.sprite.setVelocityX(-10)
             } else
             {
-                this.sprite.setVelocityX(50)
+                this.sprite.setVelocityX(10)
             }
         }
         else
         {
-            this.sprite.setVelocityY(-20)
+            this.sprite.setVelocityY(-10)
         }
 
             this.setHealth(this.health-10)
 
             const startColor = Phaser.Display.Color.ValueToColor(0xffffff)
-            const endColor = Phaser.Display.Color.ValueToColor(0x0000ff)
+            const endColor = Phaser.Display.Color.ValueToColor(0xff0000)
 
             this.scene.tweens.addCounter({
                 from: 0,

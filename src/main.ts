@@ -22,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
         }
 	},
 	fps:{
-		min:120,
+		min:100,
 		target:140,
 		forceSetTimeOut:true,
 	},

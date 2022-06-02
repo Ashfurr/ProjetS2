@@ -63,18 +63,19 @@ export default class Projectil
             
             
         })
-        this.scene.time.delayedCall(50,()=>{
+        const time=this.scene.time.delayedCall(40,()=>{
             canBedestroy=true
             this.projectil.setSensor(false)
         })
         this.projectil.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyA 
             const bodyB = data.bodyB
-            if(bodyB.label==='player'){
+            if(body.label==='player' && body.isSensor===false){
+                console.log(body.isSensor)
                 this.tween.off
                 this.projectil.emit('disabled')
                 life.destroy()
-                
+                time.destroy()
                 this.projectil.destroy()
             }
             if(body.label==='bodyEnnemy'&& canBedestroy===true){

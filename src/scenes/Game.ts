@@ -74,7 +74,7 @@ export default class Game extends Phaser.Scene {
 
 	create() {
 
-	
+	this.input.manager.canvas.style.cursor = "none"
     const gui = new GUI();
 
     const p1 = gui.addFolder('Pointer');
@@ -220,11 +220,8 @@ export default class Game extends Phaser.Scene {
 				}
 				case "saves":
 				{
-					
 					const rect=this.matter.add.sprite(x+width*0.5,y+height*0.5,"save",undefined,{
-						isStatic:true,
-						isSensor:true,
-					}).setSize(100,200).setDisplaySize(100,200)
+					}).setDisplaySize(100,200).setRectangle(100,1000,{isStatic:true,})
 
 
 					rect.setData("type","rect")

@@ -12,9 +12,9 @@ private graphics!: Phaser.GameObjects.Graphics
 private platform: MatterJS.BodyType[]
 private platformDisplay: Phaser.GameObjects.Image[]
 private constraint!: MatterJS.ConstraintType
-private nbplatform=10
 private trace = true
 private delayerase
+private nbplatform=5
 
     constructor(scene: Game)
     {
@@ -23,7 +23,6 @@ private delayerase
         this.platform=[]
         this.platformDisplay=[]
         this.scene.input.mouse.disableContextMenu();
-        const nbplatform=15
         const sides = 6;
         const size = 32;
         const distance = size * 2;
@@ -31,7 +30,10 @@ private delayerase
         const lastPosition = new Phaser.Math.Vector2();
         const Options = { friction: 0, frictionAir: 0, restitution: 0, ignoreGravity: true,inertia: Infinity };
         const pinOptions = { friction: 0, frictionAir: 0, restitution: 0, ignoreGravity: true, inertia: Infinity, isStatic: true,label:'floor'};
-        
+        events.on('mech-augment',()=>{
+            console.log('oui')
+            this.nbplatform+=1
+        },this)
         events.on("erase",()=>{
             if(this.trace===false){
             this.delayerase.destroy()
@@ -43,14 +45,18 @@ private delayerase
         
         this.scene.input.on('pointerdown', (pointer)=> 
             {
-                if(this.platform.length<nbplatform && this.trace===true)
+                
+                if(this.platform.length<=this.nbplatform && this.trace===true)
                 {
+                    
+                    
                     lastPosition.x = pointer.worldX;
                     lastPosition.y = pointer.worldY;
                     this.previous = this.scene.matter.add.polygon(pointer.worldX, pointer.worldY, sides, size, pinOptions);
                     const image= this.scene.add.image(pointer.worldX, pointer.worldY,'mechanic',"Calque "+Phaser.Math.Between(1,8)).setDisplaySize(60,60).setPipeline('Light2D').setAngle(Phaser.Math.Between(0,180))
                     this.platform.push(this.previous)
                     this.platformDisplay.push(image)
+                    events.emit('mech-changed',(((this.nbplatform-this.platform.length)*100)/this.nbplatform))
 
                     this.delayerase=this.scene.time.delayedCall(3000, () => 
                         {
@@ -67,8 +73,11 @@ private delayerase
                     const y =  pointer.worldY;
                 
 
-                    if (Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y) > distance && Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y)<distance*3 && this.platform.length<nbplatform)
+                    if (Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y) > distance && Phaser.Math.Distance.Between(x, y, lastPosition.x, lastPosition.y)<distance*3 && this.platform.length<=this.nbplatform)
                     {
+                        
+                        
+                        
                         this.delayerase.destroy()
 
                         lastPosition.x = x;
@@ -82,6 +91,7 @@ private delayerase
                         this.previous = this.current;
                         this.platform.push(this.previous)
                         this.platformDisplay.push(image)
+                        events.emit('mech-changed',(((this.nbplatform-this.platform.length)*100)/this.nbplatform))
 
                         this.delayerase=this.scene.time.delayedCall(3000, () => 
                         {
@@ -94,7 +104,7 @@ private delayerase
 
             }, this);
             this.scene.input.on('pointerup',  (pointer)=> {
-                if(this.trace===true && this.platform.length>0)
+                if(this.trace===true && this.platform.length-1>0)
                 {
                     events.emit('active')
                     this.trace=false
@@ -102,7 +112,7 @@ private delayerase
                 
             })
             this.scene.input.on('gameout',  (pointer)=> {
-                if(this.trace===true && this.platform.length>0)
+                if(this.trace===true && this.platform.length-1>0)
                 {
                     events.emit('active')
                     this.trace=false
@@ -116,21 +126,28 @@ private delayerase
 
     private erasePlatform(platform: MatterJS.BodyType[])
     {
+        
         const time=this.scene.time.addEvent(
         {
             delay: 100,
             callback: () => 
             {
+                
                 this.scene.matter.world.remove(platform[0])
+                
                 if(platform.length>1)
                 {
                 platform.shift()
                 }
+                events.emit('mech-changed',(((this.nbplatform-(this.platform.length-1))*100)/this.nbplatform))
+                console.log((((this.nbplatform-(this.platform.length-1))*100)/this.nbplatform),this.platform.length)
+                
             },
                 repeat: platform.length ,     
         })
         this.scene.time.delayedCall(platform.length*100, ()=> 
         {
+            
             time.destroy()
             events.emit('disactive')
             this.trace=true 
@@ -140,6 +157,7 @@ private delayerase
     {
         const time=this.scene.time.addEvent(
         {
+            
             delay: 100,
             callback: () => 
             {
@@ -148,6 +166,7 @@ private delayerase
                 {
                  platform.shift()
                 }
+                
             },
                 repeat: platform.length ,
         })
@@ -159,7 +178,6 @@ private delayerase
     update(dt: number)
     {
         
-       
     } 
 
 }
