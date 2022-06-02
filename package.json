@@ -1,0 +1,44 @@
+{
+  "name": "projets2",
+  "version": "1.0.0",
+  "description": "Mon Projet en Ts sur Phaser",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "parcel src/index.html -p 8000",
+    "build": "parcel build src/index.html --out-dir dist",
+    "build-gh": "parcel build src/index.html --out-dir dist --public-url /platformers2/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashfurr/ProjetS2.git"
+  },
+  "author": "ashfurr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ashfurr/ProjetS2/issues"
+  },
+  "staticFiles": {
+    "staticPath": "public",
+    "watcherGlob": "**"
+  },
+  "parcelCleanPaths": [
+    "dist"
+  ],
+  "homepage": "https://github.com/Ashfurr/ProjetS2#readme",
+  "devDependencies": {
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "@types/dat.gui": "^0.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "dat.gui": "^0.7.9",
+    "eslint": "^8.16.0",
+    "matter-js": "^0.18.0",
+    "parcel-plugin-clean-easy": "^1.0.2",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "phaser": "^3.60.0-beta.8"
+  }
+}
