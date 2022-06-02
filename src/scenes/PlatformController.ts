@@ -8,7 +8,7 @@ private sprite:Phaser.Physics.Matter.Sprite
     constructor(scene:Phaser.Scene,sprite:Phaser.Physics.Matter.Sprite,destination:number,type:String,velocity:number){
             this.scene=scene
             this.sprite=sprite
-            this.sprite.setFriction(1)
+
             if(type==='platform-A'){
                 this.platformX(sprite,destination,velocity)
             }
@@ -60,21 +60,21 @@ private sprite:Phaser.Physics.Matter.Sprite
             let active=true
             const tweens=this.scene.tweens.addCounter({
                 from:0,
-                to:1,
+                to:100,
                 yoyo:true,
-                duration:500,
+                duration:1000,
                 onUpdate:tween => {
                     if(active) {
-                        this.sprite.setVelocityY(velocity)
-                        if(this.sprite.y>=destination)
+                        this.sprite.setVelocityY(-velocity)
+                        if(this.sprite.y<=destination)
                         {
                             active=false
                         }
                     }
                     else if(!active){
-                        this.sprite.setVelocityY(-velocity)
+                        this.sprite.setVelocityY(velocity)
                     }
-                    if(this.sprite.y<y)
+                    if(this.sprite.y>y)
                     {
                         active=true
                     }

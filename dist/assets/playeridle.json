@@ -1,0 +1,1112 @@
+{
+	"textures": [
+		{
+			"image": "playeridle.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 3926,
+				"h": 1208
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "chibirussian(1).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(2).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 303,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(3).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 605,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(4).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 907,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(5).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1209,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(6).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1511,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(7).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1813,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(8).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2115,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(9).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2417,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(10).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2719,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(11).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3021,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(12).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3323,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(13).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3625,
+						"y": 1,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(14).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(15).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 303,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(16).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 605,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(17).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 907,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(18).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1209,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(19).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1511,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(20).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1813,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(21).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2115,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(22).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2417,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(23).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2719,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(24).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3021,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(25).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3323,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(26).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3625,
+						"y": 303,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(27).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(28).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 303,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(29).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 605,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(30).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 907,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(31).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1209,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(32).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1511,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(33).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1813,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(34).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2115,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(35).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2417,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(36).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2719,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(37).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3021,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(38).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3323,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(39).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3625,
+						"y": 605,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(40).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(41).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 303,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(42).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 605,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(43).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 907,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(44).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1209,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(45).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1511,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(46).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 1813,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(47).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2115,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(48).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2417,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(49).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 2719,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(50).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3021,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(51).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3323,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				},
+				{
+					"filename": "chibirussian(52).png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 300,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 300,
+						"h": 300
+					},
+					"frame": {
+						"x": 3625,
+						"y": 907,
+						"w": 300,
+						"h": 300
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:24f8ad54966c45bd2f1ea0a1d2fbd1a1:79fb80bc8b5445b9939d617c4787f21e:1a712338f00bda6b5807f6b64fd21bdd$"
+	}
+}

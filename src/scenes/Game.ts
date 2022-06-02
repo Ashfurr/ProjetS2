@@ -163,7 +163,7 @@ export default class Game extends Phaser.Scene {
 	})
 		const objectsLayer = map.getObjectLayer('objects')
 		objectsLayer.objects.forEach(objData=>{
-			const{ x = 0 , y = 0 , name, width=0,height=0 } = objData
+			const{ x = 0 , y = 0 , name, width=0,height=0,rotation=0 } = objData
 			
 			switch(name)
 			{
@@ -185,7 +185,16 @@ export default class Game extends Phaser.Scene {
 					platform.setFixedRotation()
 					
 					
-					this.platformController= new PlatformController(this,platform,1300,'platform-A',10)
+					this.platformController= new PlatformController(this,platform,rotation,'platform-A',10)
+					break
+				}
+				case 'platform-B':
+				{
+					const platform=this.matter.add.sprite(x,y,"platform",0x7A7A7A,{ignoreGravity:true}).setDisplaySize(250,50)
+					platform.setFixedRotation()
+					
+					
+					this.platformController= new PlatformController(this,platform,rotation,'platform-B',10)
 					break
 				}
 				case 'playerspawn':
@@ -273,6 +282,7 @@ export default class Game extends Phaser.Scene {
 		const camera=this.cameras.main
         cam.startFollow(this.player,false,0.5,0.5,0,100)
         cam.setBounds(0,0,14000,1600,true)
+		
 		camera.setZoom(1.3)
 		cam.setLerp(0.05,0.05)
         
