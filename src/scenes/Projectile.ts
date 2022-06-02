@@ -70,7 +70,7 @@ export default class Projectil
         this.projectil.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyA 
             const bodyB = data.bodyB
-            if(body.label==='player' && body.isSensor===false){
+            if(body.label==='player'){
                 console.log(body.isSensor)
                 this.tween.off
                 this.projectil.emit('disabled')

@@ -19,7 +19,7 @@ export default class Game extends Phaser.Scene {
 	private playerController?: PlayerController
 	private SnowmanController?: SnowmanController
 	private platformController?: PlatformController
-	public save: Save[]=[]
+	private save: Save[]=[]
 	private obstacles!: ObstaclesController
 	private snowmen: SnowmanController[]= []
 	private mechanic!: Mechanic
