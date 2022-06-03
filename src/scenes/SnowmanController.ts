@@ -92,15 +92,6 @@ export default class SnowmanController
             }
             
         });
-            this.scene.matter.world.on('collisionactive',(event, bodyA, bodyB)=> {
-                if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center){
-                    this.stateMachine.setState('fire')
-                    this.cible.x=bodyA.position.x
-                    this.cible.y=bodyA.position.y
-                    
-                }
-               
-            })
             
         this.scene.matter.world.on('collisionend',(event, bodyA, bodyB)=> {
             if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center && this.alive===true){
@@ -112,8 +103,6 @@ export default class SnowmanController
     tracking(x:number,y:number){
         this.cible.x=x 
         this.cible.y=y
-        //if(Phaser.Math.Distance.Between(this.cible.x,this.cible.y,this.sprite.x,this.sprite.y)<this.radius){
-        
         this.angle=(Phaser.Math.Angle.Between(this.sprite.x,this.sprite.y,this.cible.x,this.cible.y))
         
     }

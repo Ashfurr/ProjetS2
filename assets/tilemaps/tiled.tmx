@@ -98,7 +98,6 @@
   <object id="104" name="light" x="9568" y="1072" width="64" height="48">
    <text wrap="1" color="#ffc4dc">Bonjour Monde</text>
   </object>
-  <object id="105" name="snowman" x="4416" y="1088" width="200" height="48"/>
   <object id="108" name="snowman" x="8640" y="1024" width="450" height="48"/>
   <object id="111" name="platform-B" type="480" x="2704" y="720" width="96" height="48" rotation="480"/>
   <object id="112" name="platform-B" type="480" x="6224" y="768" width="96" height="48" rotation="256"/>
@@ -135,10 +134,9 @@
    <text wrap="1" color="#ffc4dc">Bonjour Monde</text>
   </object>
   <object id="139" name="end" x="13472" y="992" width="80" height="80"/>
-  <object id="141" name="spikes" x="-320" y="-320" width="272" height="1606"/>
-  <object id="142" name="spikes" x="-720" y="-304" width="15696" height="38"/>
+  <object id="141" name="spikes" x="-320" y="-2000" width="272" height="3286"/>
   <object id="143" name="star" x="1536" y="656" width="64" height="64"/>
-  <object id="145" name="spikes" x="14160" y="-832" width="272" height="1606"/>
+  <object id="145" name="spikes" x="14160" y="-2496" width="272" height="3270"/>
  </objectgroup>
  <objectgroup color="#aa0000" id="4" name="collider" locked="1">
   <object id="84" x="1728" y="1232">

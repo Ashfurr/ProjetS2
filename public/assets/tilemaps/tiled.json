@@ -369,17 +369,6 @@
                 }, 
                 {
                  "height":48,
-                 "id":105,
-                 "name":"snowman",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":200,
-                 "x":4416,
-                 "y":1088
-                }, 
-                {
-                 "height":48,
                  "id":108,
                  "name":"snowman",
                  "rotation":0,

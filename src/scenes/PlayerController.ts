@@ -129,17 +129,7 @@ export default class PlayerController {
 
 
             if (body.label === 'floor') {
-                const supports = data.collision.supports
-
-                for (let i = 0; i < supports.length; i++) {
-                    const anglu = Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(bodyB.position, supports[i]))
-                    if (anglu > 10 && anglu < 170) {
-                        this.blocked = false
-
-                    } else {
-                        this.blocked = true
-                    }
-                }
+               
                 if (this.stateMachine.isCurrentState('descent')) {
 
                     this.stateMachine.setState('idle')
