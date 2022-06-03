@@ -25,6 +25,8 @@ export default class Game extends Phaser.Scene {
 	private mechanic!: Mechanic
 	private neon!: Phaser.Physics.Matter.Sprite
 	private switch=false
+	private targuet!:SnowmanController
+	private up=0
 
 	constructor() {
 		super('game')
@@ -52,6 +54,7 @@ export default class Game extends Phaser.Scene {
 		this.load.image("health", 'assets/images/Heal.png')
 		this.load.image("fx_blue", 'assets/images/blue.png')
 		this.load.image('projectil','assets/images/projectil.png')
+		this.load.image('cadre','assets/images/cadre.png')
 		this.load.image('ennemy','assets/images/ennemie.png')
 		this.load.image('platform','assets/images/autre tileset/Goop_Tile_Half_Round-01.png')
 		this.load.atlas('mechanic',['assets/images/mechanic.png','assets/images/mechanic_n.png'],'assets/images/mechanic.json')
@@ -66,17 +69,31 @@ export default class Game extends Phaser.Scene {
 		this.load.image('mask','assets/tilesets/mask.png')
 
 		this.load.glsl("fond", 'assets/images/marble.glsl.js')
+
 		this.load.audio('moskau','assets/sound/moskaur.mp3')
+		this.load.audio('ultraviolet','assets/sound/ultraviolet.mp3')
+		this.load.audio('soundbloc','assets/sound/bloc.mp3')
+		this.load.audio('woosh','assets/sound/woosh.mp3')
+		this.load.audio('rebond','assets/sound/rebond.mp3')
+		this.load.audio('toucher','assets/sound/toucher.mp3')
+		this.load.audio('clicup','assets/sound/clicup.wav')
+		this.load.audio('powerup','assets/sound/powerup.wav')
+		this.load.audio('death','assets/sound/death.wav')
+		this.load.audio('save','assets/sound/save.wav')
+		this.load.audio('tir','assets/sound/tir.wav')
+
+		this.load.video('tuto','assets/tuto.mp4')
 
 		this.load.tilemapTiledJSON('tilemap','assets/tilemaps/tiled.json')
 		
 	}
 
 	create() {
-
+		
+	const music=this.sound.add('ultraviolet',{loop:true,volume:0.2}).play()
 	this.input.manager.canvas.style.cursor = "none"
-    const gui = new GUI();
-
+	const cam = this.cameras.main;
+    /*const gui = new GUI();
     const p1 = gui.addFolder('Pointer');
     p1.add(this.input.mousePointer, 'x').listen();
     p1.add(this.input.mousePointer, 'y').listen();
@@ -90,8 +107,6 @@ export default class Game extends Phaser.Scene {
         line2: 'z to dezoom',
         line3: 'Q and D for move Z for jump',
     }
-	const cam = this.cameras.main;
-	
 
 
     const f1 = gui.addFolder('Camera');
@@ -106,27 +121,30 @@ export default class Game extends Phaser.Scene {
     f1.add(help, 'line2');
     f1.add(help, 'line3');
     f1.open();
-
-
+	*/
+	//p1.add(this.mechanic,'trace').listen()
+	//p1.open();
 		
 		
 		this.scene.launch('ui')
 		this.mechanic= new Mechanic(this)
-	p1.add(this.mechanic,'trace').listen()
-	p1.open();
+	
 		const map = this.make.tilemap({key: 'tilemap'})
 		const tileset = map.addTilesetImage('Calque21', 'tiles',64,64)
 		
 		
 		const bg2=this.add.image(-1500,100,"bg2").setOrigin(0,0).setScrollFactor(0.1,0)
 		const bg1=this.add.image(-1000,0,"bg1").setOrigin(0,0).setScrollFactor(0.3,0)
-		const mask=this.add.image(0,0,"mask").setOrigin(0,0)
+		const mask=this.add.image(0,-5,"mask").setOrigin(0,0)
 		const shader=this.add.shader('fond',0,0,14000,1372).setOrigin(0,0)
 		shader.mask= new Phaser.Display.Masks.BitmapMask(this,mask)
 		
 		const ground = map.createLayer('ground', tileset).setDepth(1).setPipeline('Light2D')
-		const fground=this.add.image(0,0,"fground").setOrigin(0,0).setScrollFactor(1.1,1).setDepth(2)
+		const fground=this.add.image(0,-100,"fground").setOrigin(0,0).setScrollFactor(1.1,1).setDepth(2)
 		
+		const tuto = this.add.video(752, 500, 'tuto').setDisplaySize(400,225).setOrigin(0,0)
+   		tuto.play(true)
+		   this.add.image(700,470,'cadre').setDisplaySize(504,284).setOrigin(0,0)
 		
 		
 		
@@ -170,18 +188,18 @@ export default class Game extends Phaser.Scene {
 				case 'light':
 					{
 						const color=Phaser.Display.Color.HexStringToColor(objData.text.color).color
-						this.lights.addLight(x,y,1000,color,5)
+						this.lights.addLight(x,y,1000,color,1)
 						break
 					}
 				case 'light-bg':
 				{
-					const light=this.lights.addPointLight(x,y,0xffffff,10000,0.1).setBlendMode("MULTIPLY")
+					const light=this.lights.addPointLight(x,y,0x001265,10000,0.3).setBlendMode("MULTIPLY")
 					this.tweens.add({targets:light,radius:0,repeat:-1,yoyo:true,duration:2000})
 					break
 				}
 				case 'platform-A':
 				{
-					const platform=this.matter.add.sprite(x,y,"platform",0x7A7A7A,{ignoreGravity:true}).setDisplaySize(250,50)
+					const platform=this.matter.add.sprite(x,y,"platform",0x7A7A7A,{ignoreGravity:true,label:'platform'}).setDisplaySize(250,50)
 					platform.setFixedRotation()
 					
 					
@@ -199,6 +217,7 @@ export default class Game extends Phaser.Scene {
 				}
 				case 'playerspawn':
 				{
+					
 					this.player = this.matter.add.sprite(x,y, 'player',undefined)
 						.setDisplaySize(150,150)
 						.setDepth(0)
@@ -206,6 +225,7 @@ export default class Game extends Phaser.Scene {
 					this.player.setCircle(80,{label:'player'})
 					this.player.setFriction(1)
 					this.player.setFrictionStatic(10)
+					
 					
 	
 					this.playerController = new PlayerController(this,this.player, this.cursors, this.obstacles)	
@@ -222,15 +242,44 @@ export default class Game extends Phaser.Scene {
 					
 					
 					
-					this.snowmen.push(new SnowmanController(this, snowman))
+					this.snowmen.push(new SnowmanController(this, snowman,width))
 					this.obstacles.add('snowman', snowman.body as MatterJS.BodyType)
 					
 					break
 				}
+				case "end":
+					{
+						const end=this.matter.add.sprite(x,y,'save',undefined,{isSensor:true,isStatic:true})
+						end.visible=false
+						const circlezone= new Phaser.Geom.Circle(0,0,250)
+						const fxSave = this.add.particles('partproj')
+        				const emmiterproj = fxSave.createEmitter(
+            				{
+							x:x,
+							y:y,
+							tint:[0x000000,0x6A0381],
+							speed: {min: 500, max: 900},
+							//angle:{start:0,end:360,steps:64},
+							scale: {start: 0.4, end: 0.1},
+							moveToX:x,
+							moveToY:y,
+							lifespan: 500,
+							frequency: 1,
+							quantity:2,
+							rotate:{start:360,end:0},
+							alpha: {start:1,end:0},
+							emitZone:{type: 'random',source:circlezone}
+							})
+							end.setData("type","end")
+
+						break
+					}
+					
 				case "saves":
 				{
 					const rect=this.matter.add.sprite(x+width*0.5,y+height*0.5,"save",undefined,{
-					}).setDisplaySize(100,200).setRectangle(100,1000,{isStatic:true,})
+					}).setDisplaySize(100,200).setRectangle(100,2000,{isStatic:true,isSensor:true})
+					rect.visible=false
 
 
 					rect.setData("type","rect")
@@ -242,10 +291,11 @@ export default class Game extends Phaser.Scene {
 				}
 				case 'star':
 				{
-					const star = this.matter.add.sprite(x,y-50,"star",undefined,{
+					const star = this.matter.add.sprite(x,y-50,"fx_blue",undefined,{
 						isStatic:true,
 						isSensor:true,
-					})
+					}).setDisplaySize(150,150).setBlendMode('ADD')
+					
 					star.setData("type","star")
 					break
 				}
@@ -271,17 +321,17 @@ export default class Game extends Phaser.Scene {
 		})
 		events.on("targuet",this.handleswitch,this)
 
-		const p2 = gui.addFolder('Player');
+		/*const p2 = gui.addFolder('Player');
 		p2.add(this.player, 'x').listen();
 		p2.add(this.player, 'y').listen();
 		const p3 = gui.addFolder('PlayerVelocity');
 		p3.add(this.player.body.velocity, 'x').listen();
 		p3.add(this.player.body.velocity, 'y').listen();
 		p2.open();
-		p3.open()
+		p3.open()*/
 		const camera=this.cameras.main
         cam.startFollow(this.player,false,0.5,0.5,0,100)
-        cam.setBounds(0,0,14000,1600,true)
+        cam.setBounds(0,-300,14000,1550)
 		
 		camera.setZoom(1.3)
 		cam.setLerp(0.05,0.05)
@@ -291,7 +341,8 @@ export default class Game extends Phaser.Scene {
 		
 		
 	}
-	handleswitch(){
+	handleswitch(classtarguet){
+		this.targuet = classtarguet
 		this.switch=!this.switch
 	}
 	destroy()
@@ -300,14 +351,15 @@ export default class Game extends Phaser.Scene {
 			this.snowmen.forEach(snowman => snowman.destroy())
 		}
 	
-	update(t: number, dt: number)
+	update(t: number, dt: number,)
 		{
+			this.up++
 			this.mechanic.update(dt)
 			this.playerController?.update(dt)
 			this.snowmen.forEach(snowman => snowman.update(dt))
-			if(this.switch){
-				this.snowmen.forEach(snowman => snowman.tracking(this.player.x,this.player.y))
-				
+			if(this.switch && this.up>1500){
+				this.up=0
+				this.targuet.tracking(this.player.x,this.player.y)
 			}
 		}
 		

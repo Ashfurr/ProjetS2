@@ -20,8 +20,10 @@ export default class SnowmanController
     private timerAttackSpeed=Phaser.Time.TimerEvent
     private angle!:number
     private emmiterproj:Phaser.GameObjects.Particles.ParticleEmitter
+    private radius:number
    
-    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite) {
+    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite,radius:number) {
+        this.radius=radius
         this.scene = scene
         this.sprite= sprite
         this.createAnimations()
@@ -51,7 +53,7 @@ export default class SnowmanController
             },
         }
         const ennemybody=this.scene.matter.bodies.circle(sprite.x,sprite.y,50,{label:'bodyEnnemy'})
-        ennemyController.sensors.center = this.scene.matter.bodies.circle(sprite.x,sprite.y,450,{isSensor:true})
+        ennemyController.sensors.center = this.scene.matter.bodies.circle(sprite.x,sprite.y,this.radius,{isSensor:true})
         const compoundenemy = this.scene.matter.body.create({parts:[ennemybody,ennemyController.sensors.center ]})
         ennemyController.sprite.setExistingBody(compoundenemy)
         ennemyController.sprite.setFixedRotation()
@@ -82,6 +84,7 @@ export default class SnowmanController
         events.on('snowmen-stomped', this.handleStomped, this)
         this.scene.matter.world.on('collisionstart',(event, bodyA, bodyB)=> {
             if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center){
+                console.log(bodyB)
                 this.stateMachine.setState('fire')
                 this.cible.x=bodyA.position.x
                 this.cible.y=bodyA.position.y
@@ -89,10 +92,19 @@ export default class SnowmanController
             }
             
         });
+            this.scene.matter.world.on('collisionactive',(event, bodyA, bodyB)=> {
+                if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center){
+                    this.stateMachine.setState('fire')
+                    this.cible.x=bodyA.position.x
+                    this.cible.y=bodyA.position.y
+                    
+                }
+               
+            })
+            
         this.scene.matter.world.on('collisionend',(event, bodyA, bodyB)=> {
             if(bodyA.label==='player'&& bodyB===ennemyController.sensors.center && this.alive===true){
                 this.stateMachine.setState('idle')
-  
             }
         })
            
@@ -100,7 +112,10 @@ export default class SnowmanController
     tracking(x:number,y:number){
         this.cible.x=x 
         this.cible.y=y
+        //if(Phaser.Math.Distance.Between(this.cible.x,this.cible.y,this.sprite.x,this.sprite.y)<this.radius){
+        
         this.angle=(Phaser.Math.Angle.Between(this.sprite.x,this.sprite.y,this.cible.x,this.cible.y))
+        
     }
     destroy()
     {
@@ -109,7 +124,7 @@ export default class SnowmanController
     private idleOnEnter()
     {
         const r = Phaser.Math.Between(1,100)
-        this.sprite.play('snowmen-idle')
+        
         if(r < 50)
         {
             this.stateMachine.setState('move-left')
@@ -123,7 +138,7 @@ export default class SnowmanController
     {
         this.sprite.flipX=true
         this.moveTime= 0
-        this.sprite.play('snowmen-walk')
+        
 
     }
     private moveLeftOnUpdate(dt: number)
@@ -152,13 +167,15 @@ export default class SnowmanController
     private fireOnEnter(){
         this.emmiterproj.setTint(0x8B0000)
         this.attackspeed=0
-        events.emit('targuet') 
+        events.emit('targuet',this) 
         this.sprite.setStatic(true)
+        new Projectil(this.scene,this.sprite.x,this.sprite.y,this.angle)
+        
     }
 private fireOnUpdate(dt:number){
          
         this.attackspeed+=dt
-        if(this.attackspeed>2000){
+        if(this.attackspeed>1500){
             new Projectil(this.scene,this.sprite.x,this.sprite.y,this.angle)
             this.attackspeed=0
         }
@@ -193,22 +210,12 @@ private fireOnUpdate(dt:number){
     }
     private createAnimations()
     {
-        this.sprite.anims.create({
-            key: "snowmen-idle",
-            frameRate: 4,
-            frames: [{key: 'snowman', frame: 'robo_player_0'}],
-            repeat: -1,
-        })
-        this.sprite.anims.create({
-            key: 'snowmen-walk',
-            frameRate: 4,
-            frames: this.sprite.anims.generateFrameNames('snowman', {start: 2, end: 3, prefix: 'robo_player_'}),
-            repeat: -1,
-        })
+       
     }
     update(dt: number)
     {   
         if(this.sprite.active===true){
+            
         this.stateMachine.update(dt)  } 
     }
 }

@@ -18,7 +18,7 @@ export default class Save {
         const fxSave = this.scene.add.particles('fx_blue')
         const emmiterSave = fxSave.createEmitter(
             {
-                x: {min: x - width / 2, max: x + width / 2},
+                x: {min: x -20, max: x + 20},
                 y: y + height / 2,
                 speed: {min: 200, max: 600},
                 angle: [-85, -95],
@@ -26,12 +26,13 @@ export default class Save {
                 lifespan: {min: 1000, max: 5000},
                 blendMode: 'ADD',
                 frequency: 50,
+                quantity:5,
                 alpha: {min: 1, max: 0.8},
                 tint: [0x0178EE, 0xB801EE, 0xDD9D00],
                 bounce: 0.5,
             });
             rect.on("disabled",function(){
-                emmiterSave.explode(20,x,y)
+                emmiterSave.explode(100)
             })
             starsFxContainer.add(fxSave);
         });

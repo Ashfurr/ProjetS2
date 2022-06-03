@@ -8,20 +8,21 @@ export default class Start extends Phaser.Scene
         super('Start');
     }
     preload(){
-        this.load.image("bg2", 'assets/images/ash_logo.png')
+        this.load.image("logo", 'assets/images/ash_logo.png')
         this.load.image("cursor", 'assets/images/cursor.png')
     }
     create()
     {
-        
+        /*
         const gui = new GUI();
 
         var p1 = gui.addFolder('Pointer');
         p1.add(this.input, 'x').listen();
         p1.add(this.input, 'y').listen();
+        */
         
         const {width, height}= this.scale
-        const bg=this.add.image(0,0,'bg2').setOrigin(0,0).setDisplaySize(width,height).setPipeline('Light2D');
+        const bg=this.add.image(0,0,'logo').setOrigin(0,0).setDisplaySize(width,height).setPipeline('Light2D');
         const button = this.add.rectangle(width*0.5005,height*0.6905,400,209,0x000000,0).setStrokeStyle(6,0x000000)
             .setInteractive()
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP,()=> 

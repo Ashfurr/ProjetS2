@@ -7,11 +7,13 @@ export default class Projectil
     private projectil:Phaser.Physics.Matter.Sprite
     private lastSnowmen?: Phaser.Physics.Matter.Sprite
     private tween!:Phaser.Tweens.Tween
+    private sound:Phaser.Sound.BaseSound
     constructor(scene:Phaser.Scene,x:number,y:number,angle:number){
         const vitesse=10
         this.scene=scene
         let canBedestroy=false
-    
+        this.sound=this.scene.sound.add('tir',{volume:0.5})
+        this.sound.play()
         this.projectil=this.scene.matter.add.sprite(x,y,'projectil',undefined,{label:'projectil',ignoreGravity:true,frictionAir:0,isSensor:true}).setDisplaySize(50,50)
         this.projectil.setBounce(1)
         this.projectil.setTintFill(0x000000)
@@ -59,6 +61,7 @@ export default class Projectil
         const life=this.scene.time.delayedCall(3000,()=>{
             this.tween.off
             this.projectil.emit('disabled')
+            this.sound.off
             this.projectil.destroy()
             
             
@@ -70,12 +73,15 @@ export default class Projectil
         this.projectil.setOnCollide((data: MatterJS.ICollisionPair) => {
             const body = data.bodyA 
             const bodyB = data.bodyB
+            if(body.label==='ground'|| body.label==='floor'){
+            this.scene.sound.add('rebond',{volume:0.1}).play()}
             if(body.label==='player'){
                 console.log(body.isSensor)
                 this.tween.off
                 this.projectil.emit('disabled')
                 life.destroy()
                 time.destroy()
+                this.sound.off
                 this.projectil.destroy()
             }
             if(body.label==='bodyEnnemy'&& canBedestroy===true){
@@ -84,6 +90,7 @@ export default class Projectil
                 this.tween.off
                 this.projectil.emit('disabled')
                 this.projectil.destroy()
+                this.sound.off
                 life.destroy()
             }
         })

@@ -22,6 +22,8 @@ export default class PlayerController {
     private lastSave?: Phaser.Physics.Matter.Sprite
     private music:Phaser.Sound.BaseSound
     private blocked=false
+    private constraint!:MatterJS.ConstraintType
+    private lock:boolean
 
     constructor(scene: Phaser.Scene,sprite: Phaser.Physics.Matter.Sprite, cursors: CursorsKeys, obstacles: ObstaclesController) {
         this.scene = scene
@@ -30,7 +32,10 @@ export default class PlayerController {
         this.obstacles = obstacles
         this.createAnimations()
         this.music=this.scene.sound.add('moskau',{loop:true})
+        
         this.keys = this.scene.input.keyboard.addKeys('Z,Q,S,D,E')
+        this.lock=true
+        
 		
 
         this.sprite.setFixedRotation()
@@ -81,76 +86,80 @@ export default class PlayerController {
             const body = data.bodyB as MatterJS.BodyType
             const bodyB = data.bodyA as MatterJS.BodyType
             const gameObject = body.gameObject
-            const gameObject1=bodyB.gameObject
-            const supports=data.collision.supports
+            const gameObject1 = bodyB.gameObject
+            const supports = data.collision.supports
             //const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,normal))
-           
-            
+
+
             //console.log(normal.x.toFixed(3),normal.y.toFixed(3))
-            
-            if(body.label==='bodyEnnemy' && this.sprite.isSensor()===false)
-            {
-                
-                this.lastSnowmen= body.gameObject
+
+            if (body.label === 'bodyEnnemy' && this.sprite.isSensor() === false) {
+
+                this.lastSnowmen = body.gameObject
                 {
+                    this.scene.sound.add('toucher', {volume: 1}).play()
                     this.stateMachine.setState('snowmen-hit')
                 }
                 return
             }
-            if(body.label==='projectil' && this.sprite.isSensor()===false){
+            if (body.label === 'projectil' && this.sprite.isSensor() === false) {
                 this.stateMachine.setState('snowmen-hit')
-                return
-            }
-            
-            if (this.obstacles.is('spikes', bodyB)||this.obstacles.is('spikes', body))
-            {
-                this.stateMachine.setState('spike-hit')
-            
-                return
-            }
-            if (this.obstacles.is('trigger', bodyB))
-            {
+                this.scene.sound.add('toucher', {volume: 1}).play()
                 return
             }
 
-          
-            if(body.label==='floor'){
-                const supports=data.collision.supports
-                
-                for(let i=0;i<supports.length;i++){
-                    const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(bodyB.position,supports[i]))
-                    if(anglu>10 && anglu<170){
-                        this.blocked=false
-                        
-                    }
-                    else{
-                        this.blocked=true
+            if (body.label === 'platform') {
+                this.stateMachine.setState('idle')
+                if (this.stateMachine.isCurrentState('idle')) {
+                    if (this.lock === true && this.sprite.isSensor() === false) {
+                        this.lock = false
+                        this.constraint = this.scene.matter.add.constraint(body, bodyB, 110, 0.7)
                     }
                 }
-                 if (this.stateMachine.isCurrentState('descent'))
-                {
-                    
+            }
+
+            if (this.obstacles.is('spikes', bodyB) || this.obstacles.is('spikes', body)) {
+                this.stateMachine.setState('spike-hit')
+
+                return
+            }
+            if (this.obstacles.is('trigger', bodyB)) {
+                return
+            }
+
+
+            if (body.label === 'floor') {
+                const supports = data.collision.supports
+
+                for (let i = 0; i < supports.length; i++) {
+                    const anglu = Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(bodyB.position, supports[i]))
+                    if (anglu > 10 && anglu < 170) {
+                        this.blocked = false
+
+                    } else {
+                        this.blocked = true
+                    }
+                }
+                if (this.stateMachine.isCurrentState('descent')) {
+
                     this.stateMachine.setState('idle')
                 }
                 return
             }
-            if(bodyB.label==='ground')
-            { 
-                for(let i=0;i<supports.length;i++){
-                    const anglu=Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position,supports[i]))
-                    if(anglu>20 && anglu<160){
-                        this.blocked=false
-                        
-                    }
-                    else{
-                        
-                        this.blocked=true
-                        
+            if (bodyB.label === 'ground') {
+                for (let i = 0; i < supports.length; i++) {
+                    const anglu = Phaser.Math.RadToDeg(Phaser.Math.Angle.BetweenPoints(body.position, supports[i]))
+                    if (anglu > 20 && anglu < 160) {
+                        this.blocked = false
+
+                    } else {
+
+                        this.blocked = true
+
                     }
                 }
-                if (this.stateMachine.isCurrentState('descent'))
-                {
-                    
+                if (this.stateMachine.isCurrentState('descent')) {
+
                     this.stateMachine.setState('idle')
                 }
                 return
@@ -158,34 +167,45 @@ export default class PlayerController {
 
             const sprite = gameObject as Phaser.Physics.Matter.Sprite
             const type = sprite.getData('type')
-            switch(type)
-            {
-                case "star":
-                {
+            switch (type) {
+                case "star": {
                     events.emit('star-collected')
                     sprite.destroy()
                     break
                 }
-                case "rect":
+                case "rect": {
                     this.stateMachine.setState('saved')
                     sprite.emit("disabled")
                     sprite.destroy()
-            }
-            const sprite2 = gameObject1 as Phaser.Physics.Matter.Sprite
-            const type2 = sprite2.getData('type')
-            switch(type2)
-            {
-                case "star":
-                {
-                    events.emit('star-collected')
-                    sprite2.destroy()
                     break
                 }
-                case "rect":
-                    this.stateMachine.setState('saved')
-                    sprite2.emit("disabled")
-                    sprite2.destroy()
+                case "end": {
+                    console.log("end")
+                    this.scene.scene.start('game-over')
+                    break
+                }
             }
+                    const sprite2 = gameObject1 as Phaser.Physics.Matter.Sprite
+                    const type2 = sprite2.getData('type')
+                    switch (type2) {
+                        case "star": {
+                            events.emit('star-collected')
+                            sprite2.destroy()
+                            break
+                        }
+                        case "rect": {
+                            this.stateMachine.setState('saved')
+                            sprite2.emit("disabled")
+                            sprite2.destroy()
+                            break
+                        }
+                        case "end": {
+                            console.log("end")
+                            this.scene.scene.start('game-over')
+                            break
+                        }
+                    }
+            
         })
     }
     
@@ -252,6 +272,12 @@ export default class PlayerController {
         }
     }
     private idleOnExit(){
+        if(this.lock===false){
+            this.lock=true
+            
+            this.scene.matter.world.removeConstraint(this.constraint,true)
+            
+        }
         this.sprite.setStatic(false)
         
         this.music.pause()
@@ -283,11 +309,13 @@ export default class PlayerController {
     }
     private jumpOnEnter()
     {
+        
         this.sprite.setVelocityY(-12)
         this.sprite.play('player-ascent',true)
     }
     private jumpOnUpdate()
     {
+        
         this.sprite.setRotation(0)
         const speed = 5
 
@@ -300,6 +328,10 @@ export default class PlayerController {
         }
         if (this.sprite.body.velocity.y>=0){
             this.stateMachine.setState('descent')
+        }
+        const eJustPressed=Phaser.Input.Keyboard.JustDown(this.keys.E)
+        if(eJustPressed){
+            events.emit('erase')
         }
     }
     private descentOnEnter(){
@@ -315,6 +347,10 @@ export default class PlayerController {
             this.sprite.setVelocityX(speed)
             this.sprite.flipX = false
         }
+        const eJustPressed=Phaser.Input.Keyboard.JustDown(this.keys.E)
+        if(eJustPressed){
+            events.emit('erase')
+        }
     }
     private descentOnExit(){
         this.blocked=false
@@ -323,6 +359,7 @@ export default class PlayerController {
     
     private deadOnEnter()
     {
+        this.scene.sound.add('death',{volume:0.5}).play()
         this.health=100
         events.emit('health-changed', this.health)
         this.sprite.setToSleep()
@@ -347,7 +384,7 @@ export default class PlayerController {
                 {
                     targets: this.sprite,
                     x: this.save.x,
-                    y:this.save.y,
+                    y:this.save.y-20,
                     ease: 'Power1',
                     duration: 3000,
                     onUpdate:()=>{
@@ -370,6 +407,7 @@ export default class PlayerController {
 
     }
     private saveOnEnter(){
+        this.scene.sound.add('save',{volume:0.5}).play()
         this.save.x = this.sprite.x
         this.save.y= this.sprite.y
         this.stateMachine.setState('idle')

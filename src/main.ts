@@ -30,20 +30,10 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: 'matter',
 		matter: {
 			//gravity:{y:0.9},
-			debug: {
-				showVelocity: true,
-				showBody: true,
-                showStaticBody: true,
-                showInternalEdges: true,
-				showSensors: true,
-                sensorFillColor: 0x0d177b,
-                sensorLineColor: 0x1327e4,
-				showCollisions:true,
-				
-			}
+			debug: false
 		}
 	}, 
-	scene: [Game,UI,GameOver]
+	scene: [Start,Game,UI,GameOver]
 }
 
 export default new Phaser.Game(config)

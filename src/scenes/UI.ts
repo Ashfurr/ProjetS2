@@ -4,7 +4,7 @@ import{sharedInstance as events} from "~/scenes/EventCenter";
 export default class UI extends Phaser.Scene
 {
 
-    private starsLabel!: Phaser.GameObjects.Text
+    private starsLabel
     private starsCollected=0
     private graphics!: Phaser.GameObjects.Graphics
     private graphicsMech!: Phaser.GameObjects.Graphics
@@ -23,9 +23,10 @@ export default class UI extends Phaser.Scene
         this.starsCollected=0
     }
     preload(){
+        this.load.audio('availible','assets/sound/availible.wav')
         this.load.bitmapFont('myfont', 'assets/desyrel-pink.png','assets/desyrel-pink.xml')
         this.load.image('vie', 'assets/images/vie.png')
-       
+        this.load.audio('piece','assets/sound/piece.wav')
     }
    
     create()
@@ -68,6 +69,7 @@ export default class UI extends Phaser.Scene
             if(this.tween.isPlaying()===true){   
             this.tween.pause()
             cursor.setTint(undefined)
+            this.sound.add('availible',{volume:0.5}).play()
             cursor.setTexture('cursor')
             
             }
@@ -77,10 +79,10 @@ export default class UI extends Phaser.Scene
 
 
 
-        this.fpsText = this.add.text(10, 200, 'FPS: --', {
+       /* this.fpsText = this.add.text(10, 200, 'FPS: --', {
             font: 'bold 26px Arial',
             color: '#ffffff'
-        });
+        });*/
         const cursor=this.add.image(0,0,'cursor').setScale(0.2)
         this.graphics = this.add.graphics()
         this.graphicsMech=this.add.graphics()
@@ -167,11 +169,12 @@ export default class UI extends Phaser.Scene
     }
     private handleStarCollected()
     {
+        this.sound.add('piece',{volume:1}).play()
         ++this.starsCollected
         this.starsLabel.text= `Stars: ${this.starsCollected}`
     }
     update(time: number, delta: number): void {
-        this.fpsText.setText('FPS: ' + (1000/delta).toFixed(3))
+        //this.fpsText.setText('FPS: ' + (1000/delta).toFixed(3))
     }
     
 }
