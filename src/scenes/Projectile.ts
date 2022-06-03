@@ -62,7 +62,8 @@ export default class Projectil
             this.tween.off
             this.projectil.emit('disabled')
             this.sound.off
-            this.projectil.destroy()
+            this.projectil.setVisible(false)
+            this.scene.matter.world.remove(this.projectil)
             
             
         })
@@ -76,22 +77,25 @@ export default class Projectil
             if(body.label==='ground'|| body.label==='floor'){
             this.scene.sound.add('rebond',{volume:0.1}).play()}
             if(body.label==='player'){
-                console.log(body.isSensor)
                 this.tween.off
                 this.projectil.emit('disabled')
                 life.destroy()
                 time.destroy()
                 this.sound.off
-                this.projectil.destroy()
+                this.projectil.setVisible(false)
+                this.scene.matter.world.remove(this.projectil)
+                
             }
             if(body.label==='bodyEnnemy'&& canBedestroy===true){
                 this.lastSnowmen= body.gameObject
                 events.emit('snowmen-stomped',this.lastSnowmen)
                 this.tween.off
                 this.projectil.emit('disabled')
-                this.projectil.destroy()
-                this.sound.off
                 life.destroy()
+                this.projectil.setVisible(false)
+                this.scene.matter.world.remove(this.projectil)
+                this.sound.off
+                
             }
         })
     }
