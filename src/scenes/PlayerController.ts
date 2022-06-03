@@ -119,7 +119,8 @@ export default class PlayerController {
             }
 
             if (this.obstacles.is('spikes', bodyB) || this.obstacles.is('spikes', body)) {
-                this.stateMachine.setState('spike-hit')
+                if(this.sprite.isSensor()===false){
+                this.stateMachine.setState('spike-hit')}
 
                 return
             }
