@@ -88,6 +88,7 @@ export default class SnowmanController
                 this.stateMachine.setState('fire')
                 this.cible.x=bodyA.position.x
                 this.cible.y=bodyA.position.y
+                this.scene.time.delayedCall(5000,()=>{this.stateMachine.setState('idle')})
                 
             }
             

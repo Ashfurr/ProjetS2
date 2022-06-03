@@ -135,7 +135,7 @@ export default class Game extends Phaser.Scene {
 		
 		const bg2=this.add.image(-1500,100,"bg2").setOrigin(0,0).setScrollFactor(0.1,0)
 		const bg1=this.add.image(-1000,0,"bg1").setOrigin(0,0).setScrollFactor(0.3,0)
-		const mask=this.add.image(0,-5,"mask").setOrigin(0,0)
+		const mask=this.add.image(0,0,"mask").setOrigin(0,0)
 		const shader=this.add.shader('fond',0,0,14000,1372).setOrigin(0,0)
 		shader.mask= new Phaser.Display.Masks.BitmapMask(this,mask)
 		
@@ -341,8 +341,7 @@ export default class Game extends Phaser.Scene {
 		
 		
 	}
-	handleswitch(classtarguet){
-		this.targuet = classtarguet
+	handleswitch(){
 		this.switch=!this.switch
 	}
 	destroy()
@@ -359,7 +358,7 @@ export default class Game extends Phaser.Scene {
 			this.snowmen.forEach(snowman => snowman.update(dt))
 			if(this.switch && this.up>1000){
 				this.up=0
-				this.targuet.tracking(this.player.x,this.player.y)
+				this.snowmen.forEach(snowman => snowman.tracking(this.player.x,this.player.y))
 			}
 		}
 		
