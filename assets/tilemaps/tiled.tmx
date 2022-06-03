@@ -129,7 +129,6 @@
   <object id="131" name="saves" x="11648" y="48" width="64" height="64"/>
   <object id="132" name="snowman" x="3840" y="336" width="450" height="48"/>
   <object id="133" name="platform-A" type="480" x="10032" y="288" width="96" height="48" rotation="11344"/>
-  <object id="135" name="snowman" x="13536" y="384" width="450" height="48"/>
   <object id="136" name="light" x="3120" y="1040" width="64" height="48">
    <text wrap="1" color="#ffc4dc">Bonjour Monde</text>
   </object>
