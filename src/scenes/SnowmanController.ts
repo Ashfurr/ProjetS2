@@ -169,7 +169,7 @@ export default class SnowmanController
         this.attackspeed=0
         events.emit('targuet',this) 
         this.sprite.setStatic(true)
-        new Projectil(this.scene,this.sprite.x,this.sprite.y,this.angle)
+        
         
     }
 private fireOnUpdate(dt:number){

@@ -357,7 +357,7 @@ export default class Game extends Phaser.Scene {
 			this.mechanic.update(dt)
 			this.playerController?.update(dt)
 			this.snowmen.forEach(snowman => snowman.update(dt))
-			if(this.switch && this.up>1500){
+			if(this.switch && this.up>1000){
 				this.up=0
 				this.targuet.tracking(this.player.x,this.player.y)
 			}
