@@ -62,7 +62,7 @@
   <object id="11" name="star" x="4144" y="1072" width="64" height="64"/>
   <object id="56" name="saves" x="4784" y="736" width="64" height="64"/>
   <object id="60" name="saves" x="1920" y="800" width="64" height="64"/>
-  <object id="65" name="playerspawn" x="752" y="624" width="64" height="64"/>
+  <object id="65" name="playerspawn" x="432" y="576" width="96" height="64"/>
   <object id="79" name="light" x="3440" y="576" width="64" height="48">
    <text wrap="1" color="#ffc4dc">Bonjour Monde</text>
   </object>
